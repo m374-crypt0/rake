@@ -11,8 +11,8 @@ back to what actually matters: your code.
 
 At its heart, `rake` is just a clever `Makefile` that knows how to talk to
 other `Makefiles`. That's it. No fancy frameworks, no mysterious magic, no PhD
-required. Just good old battle-tested `make` and `bash` doing what they've done
-reliably for decades.
+required. Just good old battle-tested `make`, `git` and `bash` doing what
+they've done reliably for decades.
 
 ## Why You'll Get Raked With Joy
 
@@ -33,10 +33,10 @@ build`. Want to deploy the whole shebang? `make frontend deploy && make backend
 deploy`. `rake` gives you the power to compose complex operations from simple,
 predictable building blocks.
 
-**Battle-tested foundation:** Built on `make` and `bash` – tools that have been
-solving build problems since before most of us were born. If it works on one
-Unix-like system, it works everywhere. No runtime dependencies, no version
-conflicts, no surprises.
+**Battle-tested foundation:** Built on `git`, `make` and `bash` – tools that
+have been solving build problems since before most of us were born. If it works
+on one Unix-like system, it works everywhere. No runtime dependencies, no
+version conflicts, no surprises.
 
 ## The rake Philosophy
 
