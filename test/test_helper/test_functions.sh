@@ -49,3 +49,7 @@ pause_test() {
   echo ">>> $RAKE_ROOT_DIR" >&3
   read -er
 }
+
+install_from_curl() {
+  curl "file://${RAKE_ROOT_DIR}scripts/install" | bash
+}
