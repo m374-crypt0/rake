@@ -1,5 +1,6 @@
 #!/bin/env bash
 
+# TODO: refactor this
 RAKEUP_INSTALL_DIR="${RAKEUP_INSTALL_DIR:-$HOME/.rake/}"
 
 curl -L https://raw.githubusercontent.com/MetaBarj0/rake/refs/heads/main/scripts/rakeup \

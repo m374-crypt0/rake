@@ -9,8 +9,6 @@ setup() {
   load "${RAKE_ROOT_DIR}test/test_helper/bats-file/load"
 
   load "${RAKE_ROOT_DIR}test/test_helper/test_functions.sh"
-
-  load "${RAKE_ROOT_DIR}scripts/error_codes.sh"
 }
 
 teardown() {
@@ -24,5 +22,19 @@ teardown() {
 
   run "${RAKE_ROOT_DIR}scripts/rakeup"
 
-  assert_equal $status "$RAKE_INVALID_PROJECT_DIR"
+  assert_not_equal $status 0
+  assert_output 'rakeup: call rakeup within an empty directory'
+}
+
+@test 'cannot rakeup in an existing git repository' {
+  mkdir -p "${BATS_TEST_TMPDIR}/dir" &&
+    cd "${BATS_TEST_TMPDIR}/dir" &&
+    git init >/dev/null 2>&1 &&
+    mkdir inner &&
+    cd inner
+
+  run "${RAKE_ROOT_DIR}scripts/rakeup"
+
+  assert_not_equal $status 0
+  assert_output 'rakeup: do not rakeup within an existing git repository'
 }

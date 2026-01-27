@@ -1,5 +1,27 @@
 #!/bin/env bash
 
-. "${RAKE_ROOT_DIR}scripts/error_codes.sh"
+ensure_directory_empty() {
+  local c && c="$(find . \
+    -mindepth 1 -maxdepth 1 \
+    -type d,f |
+    wc -c)"
 
-exit $RAKE_INVALID_PROJECT_DIR
+  if [ "$c" -ne 0 ]; then
+    echo rakeup: call rakeup within an empty directory >&2
+    return 1
+  fi
+}
+
+ensure_not_git_repository() {
+  if git status >/dev/null 2>&1; then
+    echo 'rakeup: do not rakeup within an existing git repository' >&2
+    return 1
+  fi
+}
+
+main() {
+  ensure_directory_empty &&
+    ensure_not_git_repository
+}
+
+main
