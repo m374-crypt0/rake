@@ -1,3 +1,4 @@
+# bats file_tags=bats:focus
 setup_file() {
   bats_require_minimum_version 1.5.0
 }
