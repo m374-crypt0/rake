@@ -6,6 +6,8 @@ SHELL := /bin/bash
 
 export
 
+# simple targets
+
 .PHONY: help
 help:
 	@. ${RAKE_ROOT_DIR}/scripts/help.sh
@@ -17,3 +19,13 @@ run_rake_tests:
 .PHONY: watch_rake_tests
 watch_rake_tests:
 	@. ${RAKE_ROOT_DIR}/test/watch.sh
+
+# compound targets
+
+.PHONY: sub
+sub:
+	@:
+
+.PHONY: list
+list:
+	@:

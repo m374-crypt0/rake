@@ -14,8 +14,7 @@ run_test
 
 inotifywait -mqr \
   --event modify \
-  "${RAKE_ROOT_DIR}test" \
-  "${RAKE_ROOT_DIR}scripts" |
+  "${RAKE_ROOT_DIR}" |
   while read -r; do
     clear && run_test
   done
