@@ -1,6 +1,6 @@
 #!/bin/env bash
 
-main() {
+print_help() {
   cat <<EOF
 rake: redone with make - the utility your mono-repo deserves
 
@@ -49,6 +49,19 @@ contribution:
       - watch_rake_tests: continuously run all test suites
       - init_submodules: init required git submodules
 EOF
+}
+
+forward_to_sub_if_applicable() {
+  local ppid && local sub
+  read -r ppid _ <<<"$(cat "${RAKE_ROOT_DIR}runs/.registered_sub")"
+
+  # shellcheck source=./forward_to_sub.sh
+  [ $PPID -eq "$ppid" ] && . "${RAKE_ROOT_DIR}scripts/forward_to_sub.sh" help
+}
+
+main() {
+  forward_to_sub_if_applicable ||
+    print_help
 }
 
 main
