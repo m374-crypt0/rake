@@ -55,14 +55,12 @@ simplicity.
 ## Rough unserious and simple roadmap
 
 - [x] provides a `help` target that is the default one
-- [ ] getting started section in README to show how the f*ck things are simple
-      and under user's control
 - [x] can list all existing `sub`s
-  - [ ] only if rake has been initialized in another user specified directory
-    - [ ] otherwise tell the user what to do
-    - [ ] enrich README and help system in that sense
 - separate contribution from usage (see below)
-- [ ] can initialize `rake` in a user specified directory
-  - [ ] directory must not exist or be empty
-  - [ ] initialize a git repository or does not, depends on the user
+- [ ] create a `rakeup` utility to easily create a `rake` project anywhere it
+      is valid
+  - [ ] directory must not exist or be empty and not be within `rake` repo
+  - [ ] initialize a git repository
   - [ ] unlocks `compound targets` execution once initialized.
+  - [ ] getting started section in README to show how the f*ck things are
+        simple and under user's control
