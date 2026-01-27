@@ -1,4 +1,3 @@
-# bats file_tags=bats:focus
 setup_file() {
   bats_require_minimum_version 1.5.0
 }
@@ -17,14 +16,10 @@ teardown() {
   :
 }
 
-@test 'ensure install is executable' {
-  run "${RAKE_ROOT_DIR}scripts/install"
-
-  assert_equal $status 0
-}
-
 @test 'executing install from cURL installs rakeup in a specified directory' {
-  local dest_dir && dest_dir="${BATS_TEST_DIR}/rake_install/"
+  export RAKEUP_INSTALL_DIR="${BATS_TEST_TMPDIR}/.rake/"
 
-  assert_dir_exists "${dest_dir}.rakeup"
+  curl "file://${RAKE_ROOT_DIR}scripts/install" | bash
+
+  assert_file_exists "${RAKEUP_INSTALL_DIR}/rakeup"
 }

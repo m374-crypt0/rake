@@ -2,5 +2,6 @@
 
 RAKEUP_INSTALL_DIR="${RAKEUP_INSTALL_DIR:-$HOME/.rake/}"
 
-curl -o "${RAKEUP_INSTALL_DIR}" \
-  -L https://raw.githubusercontent.com/MetaBarj0/rake/refs/heads/main/scripts/rakeup
+curl -L https://raw.githubusercontent.com/MetaBarj0/rake/refs/heads/main/scripts/rakeup \
+  --create-dirs \
+  --output "${RAKEUP_INSTALL_DIR}/rakeup"
