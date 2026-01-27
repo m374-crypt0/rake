@@ -72,13 +72,18 @@ simplicity.
 
 ## Rough unserious and simple roadmap
 
-- [x] provides a `help` target that is the default one
-- [x] can list all existing `sub`s
-- separate contribution from usage (see below)
-- [ ] create a `rakeup` utility to easily create a `rake` project anywhere it
-      is valid
-  - [ ] directory must not exist or be empty and not be within `rake` repo
-  - [ ] initialize a git repository
-  - [ ] unlocks `compound targets` execution once initialized.
-  - [ ] getting started section in README to show how the f*ck things are
-        simple and under user's control
+- [ ] provide abbreviation for subs for user user convenience
+  - For instance, if there is only one `sub` beginning with the letter `n` such
+    as `nideovim`, the user can type either:
+    - `make nideovim ...`
+    - `make n ...`
+  - make sure there is no ambiguity in user inputs
+  - make it work for beginning of sub name but also for
+    - ending sub name:
+      - `nideovim` and `nideovim2` can be targeted by `nm` and `n2`
+        respectively
+    - split names by separator such as `-` or `_`
+      - `nideovim-test` and `nideovim-prod` can be targeted by `nt` and `np`
+        respectively
+      - and with `nd` for `nideovim-prod`
+      - and with `nideovim-t` and `nideovim-p` respectively
