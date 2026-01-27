@@ -81,7 +81,8 @@ init_rake_project() {
     remove_dev_files &&
     modify_makefile &&
     modify_help_script &&
-    git init
+    git init &&
+    echo .rake/.registered_sub >.gitignore
 }
 
 main() {
