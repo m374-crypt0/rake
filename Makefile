@@ -9,15 +9,17 @@ RAKE_ROOT_DIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 FUNCSHIONAL_ROOT_DIR := ${RAKE_ROOT_DIR}scripts/lib/funcshional/
 
 export
+.PHONY: help
 
 # simple targets
+# TODO: first, present compound targets then simple targets that are more for
+# internal purposes
+help: init_submodules
+	@. ${RAKE_ROOT_DIR}/scripts/help.sh
+
 .PHONY: init_submodules
 init_submodules:
 	@git submodule update --init --recursive
-
-.PHONY: help
-help: init_submodules
-	@. ${RAKE_ROOT_DIR}/scripts/help.sh
 
 .PHONY: run_rake_tests
 run_rake_tests: init_submodules
