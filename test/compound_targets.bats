@@ -24,10 +24,22 @@ teardown() {
   remove_rake_from_tmpdir
 }
 
-@test 'sub list output nothing if there is no sub' {
+@test 'sub list reports if there is no sub and fails' {
   run make -C "$RAKE_ROOT_DIR" sub list
 
   assert_not_equal $status 0
   assert_regex "$output" "There is no sub"
   assert_regex "$output" ".*Error ${RAKE_NO_SUB}"
+}
+
+@test 'Sub list reports invalid subs found and fails' {
+  mkdir -p "$RAKE_ROOT_DIR/subs/invalid_sub"
+
+  run make -C "$RAKE_ROOT_DIR" sub list
+
+  assert_not_equal $status 0
+  assert_regex "$output" "There is no sub"
+  assert_regex "$output" "There is some dir though:"
+  assert_regex "$output" "- invalid_sub"
+  assert_regex "$output" ".*Error ${RAKE_NO_VALID_SUB}"
 }
