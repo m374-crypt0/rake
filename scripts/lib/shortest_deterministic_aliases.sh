@@ -1,10 +1,12 @@
 # shellcheck source=../funcshional/src/funcshional.sh
 . "${FUNCSHIONAL_ROOT_DIR}/src/funcshional.sh"
 
-split_letter_sequences() {
-  local line && line="$1" &&
-    local i && local sequences &&
-    sequences="${line:0:1}" &&
+expand_to_prefixes() {
+  local line && line="$1"
+  local sequences && sequences="${line:0:1}"
+
+  # NOTE: example: ABCD gives A AB ABC ABCD
+  local i &&
     for ((i = 2; i <= ${#line}; ++i)); do
       sequences="$sequences ${line:0:$i}"
     done
@@ -12,7 +14,7 @@ split_letter_sequences() {
   echo "$sequences"
 }
 
-to_stream() {
+each_prefix_to_stream() {
   local line && line="$1"
   local acc && acc="$2"
   local stream_part &&
@@ -101,8 +103,8 @@ apply_non_shuffling_algorithm() {
   local stream && stream="$1"
 
   echo "$stream" |
-    transform_first split_letter_sequences |
-    fold_first to_stream '' |
+    transform_first expand_to_prefixes |
+    fold_first each_prefix_to_stream '' |
     remove_all_duplicate |
     output_shortest_aliases
 }
