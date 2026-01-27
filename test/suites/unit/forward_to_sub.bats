@@ -33,8 +33,12 @@ teardown() {
   [ ! -f "${RAKE_ROOT_DIR}runs/.last_sub" ]
 }
 
-@test 'call to forward_to_sub with any target creates .registered_sub file in runs directory' {
+@test 'call to forward_to_sub with any target registers it in .registered_sub file in runs directory' {
+  local target_name
+
   run call_forward_to_sub foo_target
 
-  [ -f "${RAKE_ROOT_DIR}runs/.registered_sub" ]
+  read -r target_name <<<"$(cat "${RAKE_ROOT_DIR}runs/.registered_sub")"
+
+  assert_equal "$target_name" foo_target
 }

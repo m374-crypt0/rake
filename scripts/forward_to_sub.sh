@@ -1,7 +1,10 @@
 #!/bin/env bash
 
 main() {
-  touch "${RAKE_ROOT_DIR}"runs/.registered_sub
+  local target &&
+    target="$1"
+
+  echo "$target" >"${RAKE_ROOT_DIR}"runs/.registered_sub
 }
 
-main "$@"
+main "$1"
