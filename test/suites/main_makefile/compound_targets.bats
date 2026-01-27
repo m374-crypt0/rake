@@ -40,7 +40,6 @@ teardown() {
 }
 
 @test 'Sub list reports all valid sub found' {
-  skip
   create_sub_and_target fancy_sub print
   create_sub_and_target snappy_sub yell
   create_sub_and_target shitty_sub poop
@@ -48,7 +47,7 @@ teardown() {
   run make -C "$RAKE_ROOT_DIR" sub list
 
   assert_equal $status 0
-  assert_regex "$output" "^fancy_sub$"
-  assert_regex "$output" "^snappy_sub$"
-  assert_regex "$output" "^shitty_sub$"
+  assert_output 'shitty_sub
+snappy_sub
+fancy_sub'
 }

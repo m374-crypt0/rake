@@ -21,10 +21,9 @@ only_not_sub() {
 }
 
 only_valid_sub() {
-  local subs_directory && subs_directory="${RAKE_ROOT_DIR}subs/"
   local sub && sub="$1"
 
-  [ -f "${subs_directory}${sub}/Makefile" ]
+  [ -f "${sub}/Makefile" ]
 }
 
 report_no_sub() {
@@ -56,19 +55,26 @@ let_sub_directories() {
     unlift
 }
 
-let_valid_sub_directories() {
+let_valid_sub_directories() (
+  # shellcheck disable=SC2329
+  format_valid_sub_directory() {
+    basename "$1"
+  }
+
   lift echo "$1" |
     and_then filter_first only_valid_sub |
     and_then any |
+    and_then transform_first format_valid_sub_directory |
     or_else report_no_valid_sub_directories "$1" |
     unlift
-}
+)
 
 main() {
   local sub_directories &&
     sub_directories="$(let_sub_directories)" &&
     local valid_sub_directories &&
-    valid_sub_directories="$(let_valid_sub_directories "$sub_directories")"
+    valid_sub_directories="$(let_valid_sub_directories "$sub_directories")" &&
+    echo "$valid_sub_directories"
 }
 
 main
