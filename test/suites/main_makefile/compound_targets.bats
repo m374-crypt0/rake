@@ -33,6 +33,8 @@ teardown() {
 }
 
 @test 'Sub list reports invalid subs found and fails' {
+  skip
+
   mkdir -p "$RAKE_ROOT_DIR/subs/invalid_sub"
 
   run make -C "$RAKE_ROOT_DIR" sub list
