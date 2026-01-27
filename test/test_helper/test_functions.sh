@@ -25,7 +25,7 @@ create_sub_target() {
 
   cat <<EOF >"${RAKE_ROOT_DIR}subs/${sub}/Makefile"
 ${target}:
-	@echo I am a fancy target
+	@echo I am $target target
 EOF
 }
 

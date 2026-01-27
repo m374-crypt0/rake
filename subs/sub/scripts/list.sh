@@ -69,12 +69,17 @@ let_valid_sub_directories() (
     unlift
 )
 
+append_alias() {
+  local directory && directory="$1"
+
+  echo "$directory (alias: ${directory:0:1})"
+}
+
 main() {
   local sub_directories &&
     sub_directories="$(let_sub_directories)" &&
-    local valid_sub_directories &&
-    valid_sub_directories="$(let_valid_sub_directories "$sub_directories")" &&
-    echo "$valid_sub_directories"
+    let_valid_sub_directories "$sub_directories" |
+    transform_first append_alias
 }
 
 main

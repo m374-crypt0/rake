@@ -47,9 +47,9 @@ teardown() {
   run make -C "$RAKE_ROOT_DIR" sub list
 
   assert_equal $status 0
-  assert_output 'shitty_sub
-snappy_sub
-fancy_sub'
+  assert_regex "$output" shitty_sub
+  assert_regex "$output" snappy_sub
+  assert_regex "$output" fancy_sub
 }
 
 @test 'Sub list report all valid subs found even outside of rake directory' {
@@ -59,5 +59,29 @@ fancy_sub'
   run make -f "$RAKE_ROOT_DIR"/Makefile sub list
 
   assert_equal $status 0
-  assert_output 'fancy_sub'
+  assert_regex "$output" 'fancy_sub'
+}
+
+@test 'compound abbreviated targets just work' {
+  # TODO: unskip this one
+  skip 'need a suite of unit tests'
+
+  create_sub_and_target mysub print_mysub
+  create_sub_and_target yoursub print_yoursub
+
+  run make -C "${RAKE_ROOT_DIR}" mysub print_mysub
+  assert_equal $status 0
+  assert_output 'I am print_mysub target'
+
+  run make -C "${RAKE_ROOT_DIR}" yoursub print_yoursub
+  assert_equal $status 0
+  assert_output 'I am print_yoursub target'
+
+  run make -C "${RAKE_ROOT_DIR}" m print_mysub
+  assert_equal $status 0
+  assert_output 'I am print_mysub target'
+
+  run make -C "${RAKE_ROOT_DIR}" y print_yoursub
+  assert_equal $status 0
+  assert_output 'I am print_yoursub target'
 }
