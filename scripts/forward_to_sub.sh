@@ -1,5 +1,8 @@
 #!/bin/env bash
 
+# shellcheck source=scripts/error_codes.sh
+. "${RAKE_ROOT_DIR}scripts/error_codes.sh"
+
 get_ppid() {
   if [ -n "$1" ]; then
     eval "$1"
@@ -25,13 +28,25 @@ register_sub() {
   echo "$ppid $target" >"${RAKE_ROOT_DIR}"runs/.registered_sub
 }
 
-make_sub_target() {
+make_sub_target_if_sub_exists() {
   local target && target="$1"
 
   local sub &&
     read -r _ sub <<<"$(cat "${RAKE_ROOT_DIR}"runs/.registered_sub)"
 
+  if ! does_sub_exist "$sub"; then
+    echo "The '$sub' sub does not exist"
+
+    return $RAKE_SUB_DOES_NOT_EXIST
+  fi
+
   make -s -C "${RAKE_ROOT_DIR}subs/${sub}" "$target"
+}
+
+does_sub_exist() {
+  local sub && sub="$1"
+
+  [ -d "${RAKE_ROOT_DIR}subs/${sub}" ]
 }
 
 main() {
@@ -41,7 +56,7 @@ main() {
   local ppid && ppid="$(get_ppid "$ppid_provider")"
 
   if is_sub_registered_for_ppid "$ppid"; then
-    make_sub_target "$target"
+    make_sub_target_if_sub_exists "$target"
   else
     register_sub "$ppid" "$target"
   fi

@@ -10,6 +10,8 @@ setup() {
 
   load "${RAKE_ROOT_DIR}test/test_helper/test_functions.sh"
 
+  load "${RAKE_ROOT_DIR}scripts/error_codes.sh"
+
   setup_copy_rake_in_tmpdir
 }
 
@@ -47,4 +49,12 @@ teardown() {
   run call_forward_to_sub print "$(testing_ppid_provider)"
 
   assert_equal "$output" "$direct_make_output"
+}
+
+@test 'first call to forward_to_sub with an unexisting sub fails' {
+  run call_forward_to_sub foo_sub "$(testing_ppid_provider)"
+  run call_forward_to_sub foo_target "$(testing_ppid_provider)"
+
+  assert_equal $status "$RAKE_SUB_DOES_NOT_EXIST"
+  assert_output "The 'foo_sub' sub does not exist"
 }
