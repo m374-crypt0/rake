@@ -1,1 +1,3 @@
 #!/bin/bash
+
+echo '>>> ' . "${RAKE_ROOT_DIR}scripts/error_codes.sh" >&3

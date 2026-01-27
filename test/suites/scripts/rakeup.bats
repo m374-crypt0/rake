@@ -1,3 +1,4 @@
+# bats file_tags=bats:focus
 setup_file() {
   bats_require_minimum_version 1.5.0
 }
@@ -16,10 +17,13 @@ teardown() {
   :
 }
 
-@test 'executing install from cURL installs rakeup in a specified directory' {
+@test 'cannot rakeup in a non empty directory' {
   export RAKEUP_INSTALL_DIR="${BATS_TEST_TMPDIR}/.rake/"
-
+  run touch "${RAKEUP_INSTALL_DIR}a_file"
   run install_from_curl
 
-  assert_file_exists "${RAKEUP_INSTALL_DIR}/rakeup"
+  run "${RAKEUP_INSTALL_DIR}rakeup"
+
+  assert_output abc
+  assert_equal $status "$RAKE_INVALID_PROJECT_DIR"
 }

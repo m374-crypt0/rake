@@ -46,7 +46,7 @@ testing_ppid_provider() {
 }
 
 pause_test() {
-  echo ">>> $RAKE_ROOT_DIR" >&3
+  echo ">>> $BATS_TEST_TMPDIR" >&3
   read -er
 }
 
