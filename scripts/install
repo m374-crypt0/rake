@@ -6,3 +6,20 @@ curl -L https://raw.githubusercontent.com/MetaBarj0/rake/refs/heads/main/scripts
   --create-dirs \
   --output "${RAKEUP_INSTALL_DIR}/rakeup" &&
   chmod +x "${RAKEUP_INSTALL_DIR}rakeup"
+
+case $SHELL in
+*bash)
+  if [[ ":$PATH:" != *":$RAKEUP_INSTALL_DIR:"* ]]; then
+    cat <<EOF >>"${HOME}/.bashrc"
+
+# rakeup
+export RAKEUP_INSTALL_DIR="$RAKEUP_INSTALL_DIR"
+export PATH="\${PATH}:\$RAKEUP_INSTALL_DIR"
+EOF
+    echo "Added rakeup to your PATH. Source ${HOME}/.bashrc or start a new terminal session to use rakeup."
+  fi
+  ;;
+*)
+  echo "rakeup: cannot detect your shell. Do manually add $RAKEUP_INSTALL_DIR to your PATH" >&2
+  ;;
+esac

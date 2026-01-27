@@ -1,3 +1,5 @@
+# shellcheck disable=SC2031,SC2030
+# bats file_tags=bats:focus
 setup_file() {
   bats_require_minimum_version 1.5.0
 }
@@ -17,9 +19,29 @@ teardown() {
 }
 
 @test 'executing install from cURL installs rakeup in a specified directory' {
-  export RAKEUP_INSTALL_DIR="${BATS_TEST_TMPDIR}/.rake/"
+  export HOME="${BATS_TEST_TMPDIR}"
+  export RAKEUP_INSTALL_DIR="${HOME}/.rake/"
 
   run install_from_curl
 
   assert_file_exists "${RAKEUP_INSTALL_DIR}/rakeup"
+}
+
+@test 'install only support does only support bash for path registration' {
+  export HOME="${BATS_TEST_TMPDIR}"
+  export RAKEUP_INSTALL_DIR="${HOME}/.rake/"
+  export SHELL="/bin/badsh"
+
+  run install_from_curl
+
+  assert_regex "$output" "rakeup: cannot detect your shell. Do manually add $RAKEUP_INSTALL_DIR to your PATH"
+
+  export SHELL="/bin/bash"
+
+  run install_from_curl
+
+  assert_regex "$output" "Added rakeup to your PATH. Source ${HOME}/.bashrc or start a new terminal session to use rakeup."
+
+  load "${HOME}/.bashrc"
+  [[ ":$PATH:" == *":${RAKEUP_INSTALL_DIR}:"* ]]
 }
