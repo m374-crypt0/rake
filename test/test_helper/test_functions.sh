@@ -11,16 +11,27 @@ call_forward_to_sub() {
   bash -c ". ${RAKE_ROOT_DIR}scripts/forward_to_sub.sh $1 $2"
 }
 
-create_sub_and_target() {
+create_sub_directory() {
+  local sub && sub="$1"
+
+  mkdir -p "${RAKE_ROOT_DIR}subs/${sub}"
+}
+
+create_sub_target() {
   local sub && sub="$1"
   local target && target="$2"
 
   mkdir -p "${RAKE_ROOT_DIR}subs/${sub}"
 
-  cat <<EOF >"${RAKE_ROOT_DIR}subs/${sub}/makefile"
+  cat <<EOF >"${RAKE_ROOT_DIR}subs/${sub}/Makefile"
 ${target}:
 	@echo I am a fancy target
 EOF
+}
+
+create_sub_and_target() {
+  create_sub_directory "$1" &&
+    create_sub_target "$1" "$2"
 }
 
 read_sub_from_registered_sub_file() {

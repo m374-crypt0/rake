@@ -28,6 +28,12 @@ register_sub() {
   echo "$ppid $target" >"${RAKE_ROOT_DIR}"runs/.registered_sub
 }
 
+is_valid_sub() {
+  local sub && sub="$1"
+
+  [ -f "${RAKE_ROOT_DIR}subs/${sub}/Makefile" ]
+}
+
 make_sub_target_if_sub_exists() {
   local target && target="$1"
 
@@ -38,6 +44,12 @@ make_sub_target_if_sub_exists() {
     echo "The '$sub' sub does not exist"
 
     return $RAKE_SUB_DOES_NOT_EXIST
+  fi
+
+  if ! is_valid_sub "$sub"; then
+    echo "The '$sub' sub is missing a 'Makefile'"
+
+    return $RAKE_INVALID_SUB_DIRECTORY
   fi
 
   make -s -C "${RAKE_ROOT_DIR}subs/${sub}" "$target"

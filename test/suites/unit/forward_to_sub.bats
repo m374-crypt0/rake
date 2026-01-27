@@ -58,3 +58,13 @@ teardown() {
   assert_equal $status "$RAKE_SUB_DOES_NOT_EXIST"
   assert_output "The 'foo_sub' sub does not exist"
 }
+
+@test 'call forward_to_sub on an invalid sub directory reports the error' {
+  create_sub_directory bar_sub
+
+  run call_forward_to_sub bar_sub "$(testing_ppid_provider)"
+  run call_forward_to_sub bar_target "$(testing_ppid_provider)"
+
+  assert_equal $status "$RAKE_INVALID_SUB_DIRECTORY"
+  assert_output "The 'bar_sub' sub is missing a 'Makefile'"
+}
