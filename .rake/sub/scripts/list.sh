@@ -1,20 +1,23 @@
 #!/bin/env bash
 
-# shellcheck source=../../../scripts/error_codes.sh
-. "${RAKE_ROOT_DIR}scripts/error_codes.sh"
+# shellcheck source=../../../.rake/scripts/error_codes.sh
+. "${RAKE_ROOT_DIR}.rake/scripts/error_codes.sh"
+
 . "${FUNCSHIONAL_ROOT_DIR}src/funcshional.sh"
 
 list_directories_in_subs() {
-  local subs_directory && subs_directory="${RAKE_ROOT_DIR}subs/"
+  local subs_directory && subs_directory="${RAKE_ROOT_DIR}.rake/"
 
   find "$subs_directory" \
     -mindepth 1 \
     -maxdepth 1 \
+    -not -name test \
+    -not -name scripts \
     -type d
 }
 
-only_not_sub() {
-  local subs_directory && subs_directory="${RAKE_ROOT_DIR}subs/"
+exclude_internal_subs() {
+  local subs_directory && subs_directory="${RAKE_ROOT_DIR}.rake/"
   local sub && sub="$1"
 
   [ "$sub" != "${subs_directory}sub" ]
@@ -49,7 +52,7 @@ report_no_valid_sub_directories() (
 
 let_sub_directories() {
   lift list_directories_in_subs |
-    and_then filter_first only_not_sub |
+    and_then filter_first exclude_internal_subs |
     and_then any |
     or_else report_no_sub |
     unlift

@@ -1,16 +1,16 @@
 [submodule "test/bats"]
-	path = test/bats
+	path = .rake/test/bats
 	url = https://github.com/bats-core/bats-core.git
 [submodule "test/test_helper/bats-support"]
-	path = test/test_helper/bats-support
+	path = .rake/test/test_helper/bats-support
 	url = https://github.com/bats-core/bats-support.git
 [submodule "test/test_helper/bats-assert"]
-	path = test/test_helper/bats-assert
+	path = .rake/test/test_helper/bats-assert
 	url = https://github.com/bats-core/bats-assert.git
 [submodule "test/test_helper/bats-file"]
-	path = test/test_helper/bats-file
+	path = .rake/test/test_helper/bats-file
 	url = https://github.com/bats-core/bats-file
 [submodule "scripts/lib/funcshional"]
-	path = scripts/lib/funcshional
+	path = .rake/scripts/lib/funcshional
 	url = https://github.com/MetaBarj0/funcshional.git
 	branch = main

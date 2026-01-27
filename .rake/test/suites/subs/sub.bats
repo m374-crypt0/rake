@@ -3,10 +3,10 @@ setup_file() {
 }
 
 setup() {
-  load "${RAKE_ROOT_DIR}test/test_helper/bats-support/load"
-  load "${RAKE_ROOT_DIR}test/test_helper/bats-assert/load"
+  load "${RAKE_ROOT_DIR}.rake/test/test_helper/bats-support/load"
+  load "${RAKE_ROOT_DIR}.rake/test/test_helper/bats-assert/load"
 
-  load "${RAKE_ROOT_DIR}test/test_helper/test_functions.sh"
+  load "${RAKE_ROOT_DIR}.rake/test/test_helper/test_functions.sh"
 
   setup_copy_rake_in_tmpdir
 }

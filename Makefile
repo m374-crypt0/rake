@@ -6,7 +6,7 @@ SHELL := /bin/bash
 RAKE_ROOT_DIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 
 # TODO: specific dependency setup
-FUNCSHIONAL_ROOT_DIR := ${RAKE_ROOT_DIR}scripts/lib/funcshional/
+FUNCSHIONAL_ROOT_DIR := ${RAKE_ROOT_DIR}.rake/scripts/lib/funcshional/
 
 export
 .PHONY: help
@@ -15,7 +15,7 @@ export
 # TODO: first, present compound targets then simple targets that are more for
 # internal purposes
 help: init_submodules
-	@. ${RAKE_ROOT_DIR}/scripts/help.sh
+	@. ${RAKE_ROOT_DIR}.rake/scripts/help.sh
 
 .PHONY: init_submodules
 init_submodules:
@@ -23,14 +23,14 @@ init_submodules:
 
 .PHONY: run_rake_tests
 run_rake_tests: init_submodules
-	@. ${RAKE_ROOT_DIR}/test/test.sh
+	@. ${RAKE_ROOT_DIR}.rake/test/test.sh
 
 .PHONY: watch_rake_tests
 watch_rake_tests: init_submodules
-	@. ${RAKE_ROOT_DIR}/test/watch.sh
+	@. ${RAKE_ROOT_DIR}.rake/test/watch.sh
 
 # compound targets are forwarded to a potential sub
 # NOTE: putting a dependency for this target breaks all the thing
 .PHONY: %
 %:
-	@. ${RAKE_ROOT_DIR}/scripts/forward_to_sub.sh $@
+	@. ${RAKE_ROOT_DIR}.rake/scripts/forward_to_sub.sh $@

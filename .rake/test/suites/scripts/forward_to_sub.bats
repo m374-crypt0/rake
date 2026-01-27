@@ -3,13 +3,13 @@ setup_file() {
 }
 
 setup() {
-  load "${RAKE_ROOT_DIR}test/test_helper/bats-support/load"
-  load "${RAKE_ROOT_DIR}test/test_helper/bats-assert/load"
-  load "${RAKE_ROOT_DIR}test/test_helper/bats-file/load"
+  load "${RAKE_ROOT_DIR}.rake/test/test_helper/bats-support/load"
+  load "${RAKE_ROOT_DIR}.rake/test/test_helper/bats-assert/load"
+  load "${RAKE_ROOT_DIR}.rake/test/test_helper/bats-file/load"
 
-  load "${RAKE_ROOT_DIR}test/test_helper/test_functions.sh"
+  load "${RAKE_ROOT_DIR}.rake/test/test_helper/test_functions.sh"
 
-  load "${RAKE_ROOT_DIR}scripts/error_codes.sh"
+  load "${RAKE_ROOT_DIR}.rake/scripts/error_codes.sh"
 
   setup_copy_rake_in_tmpdir
 }
@@ -18,20 +18,20 @@ teardown() {
   teardown_remove_rake_from_tmpdir
 }
 
-@test 'call to forward_to_sub without a target does not create .last_sub file in runs directory' {
+@test 'call to forward_to_sub without a target does not create .last_sub file in .rake directory' {
   run call_forward_to_sub
 
-  assert_file_not_exists "${RAKE_ROOT_DIR}runs/.last_sub"
+  assert_file_not_exists "${RAKE_ROOT_DIR}.rake/.last_sub"
 }
 
-@test 'call once to forward_to_sub with a target create a .registered_sub file in runs' {
-  assert_file_not_exists "${RAKE_ROOT_DIR}runs/.registered_sub"
+@test 'call once to forward_to_sub with a target create a .registered_sub file in .rake' {
+  assert_file_not_exists "${RAKE_ROOT_DIR}.rake/.registered_sub"
 
   run call_forward_to_sub testing_sub
 
   assert_equal $status 0
   assert_output ''
-  assert_file_exists "${RAKE_ROOT_DIR}runs/.registered_sub"
+  assert_file_exists "${RAKE_ROOT_DIR}.rake/.registered_sub"
 }
 
 @test 'each call to forward_to_sub from different parent process register a new sub' {
@@ -52,7 +52,7 @@ teardown() {
   create_sub_and_target testing_sub print
 
   local direct_make_output &&
-    direct_make_output="$(make -C "${RAKE_ROOT_DIR}subs/testing_sub" print)"
+    direct_make_output="$(make -C "${RAKE_ROOT_DIR}.rake/testing_sub" print)"
 
   run call_forward_to_sub testing_sub "$(testing_ppid_provider)"
   run call_forward_to_sub print "$(testing_ppid_provider)"

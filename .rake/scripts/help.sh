@@ -12,12 +12,13 @@ usage:
   targets built as following:
 
     make <SUB> <TARGET1> <TARGET2> ... <TARGETN> where <SUB> is a sub-directory
-    located in the special 'subs' directory of rake. A valid <SUB> must contain
+    located in the root directory of rake. A valid <SUB> must contain
     a valid Makefile having the targets you have specified in
     <COMPOUND TARGETS>
 
 examples:
-  Let's say you have a 'backend' and a 'frontend' sub in subs:
+  Let's say you have a 'backend' sub and a 'frontend' sub in this root
+  directory:
 
     make backend build test deploy
 
@@ -48,15 +49,17 @@ contribution:
       - run_rake_tests: run all test suites
       - watch_rake_tests: continuously run all test suites
       - init_submodules: init required git submodules
+  Adding internal subs si also possible, you have to create it within the
+  special .rake directory. Take a look at the sub sub to get insight.
 EOF
 }
 
 forward_to_sub_if_applicable() {
   local ppid && local sub
-  read -r ppid _ <<<"$(cat "${RAKE_ROOT_DIR}runs/.registered_sub")"
+  read -r ppid _ <<<"$(cat "${RAKE_ROOT_DIR}.rake/.registered_sub")"
 
   # shellcheck source=./forward_to_sub.sh
-  [ $PPID -eq "$ppid" ] && . "${RAKE_ROOT_DIR}scripts/forward_to_sub.sh" help
+  [ $PPID -eq "$ppid" ] && . "${RAKE_ROOT_DIR}.rake/scripts/forward_to_sub.sh" help
 }
 
 main() {

@@ -2,8 +2,7 @@
 
 ensure_directory_empty() {
   local c && c="$(find . \
-    -mindepth 1 -maxdepth 1 \
-    -type d,f |
+    -mindepth 1 -maxdepth 1 |
     wc -c)"
 
   if [ "$c" -ne 0 ]; then

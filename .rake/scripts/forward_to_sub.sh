@@ -1,7 +1,7 @@
 #!/bin/env bash
 
-# shellcheck source=scripts/error_codes.sh
-. "${RAKE_ROOT_DIR}scripts/error_codes.sh"
+# shellcheck source=.rake/scripts/error_codes.sh
+. "${RAKE_ROOT_DIR}.rake/scripts/error_codes.sh"
 
 get_ppid() {
   if [ -n "$1" ]; then
@@ -14,9 +14,9 @@ get_ppid() {
 is_sub_registered_for_ppid() {
   local ppid && ppid="$1"
 
-  [ -f "${RAKE_ROOT_DIR}runs/.registered_sub" ] &&
+  [ -f "${RAKE_ROOT_DIR}.rake/.registered_sub" ] &&
     local registered_sub_ppid &&
-    read -r registered_sub_ppid _ <<<"$(cat "${RAKE_ROOT_DIR}runs/.registered_sub")"
+    read -r registered_sub_ppid _ <<<"$(cat "${RAKE_ROOT_DIR}.rake/.registered_sub")"
 
   [ -n "$registered_sub_ppid" ] &&
     [ "$ppid" = "$registered_sub_ppid" ]
@@ -26,20 +26,20 @@ register_sub() {
   local ppid && ppid="$1"
   local target && target="$2"
 
-  echo "$ppid $target" >"${RAKE_ROOT_DIR}runs/.registered_sub"
+  echo "$ppid $target" >"${RAKE_ROOT_DIR}.rake/.registered_sub"
 }
 
 is_valid_sub() {
   local sub && sub="$1"
 
-  [ -f "${RAKE_ROOT_DIR}subs/${sub}/Makefile" ]
+  [ -f "${RAKE_ROOT_DIR}.rake/${sub}/Makefile" ]
 }
 
 make_sub_target_if_sub_exists() {
   local target && target="$1"
 
   local sub &&
-    read -r _ sub <<<"$(cat "${RAKE_ROOT_DIR}runs/.registered_sub")"
+    read -r _ sub <<<"$(cat "${RAKE_ROOT_DIR}.rake/.registered_sub")"
 
   if ! does_sub_exist "$sub"; then
     echo "The '$sub' sub does not exist"
@@ -53,13 +53,13 @@ make_sub_target_if_sub_exists() {
     return $RAKE_INVALID_SUB_DIRECTORY
   fi
 
-  make -s -C "${RAKE_ROOT_DIR}subs/${sub}" "$target"
+  make -s -C "${RAKE_ROOT_DIR}.rake/${sub}" "$target"
 }
 
 does_sub_exist() {
   local sub && sub="$1"
 
-  [ -d "${RAKE_ROOT_DIR}subs/${sub}" ]
+  [ -d "${RAKE_ROOT_DIR}.rake/${sub}" ]
 }
 
 main() {

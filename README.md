@@ -28,9 +28,12 @@ everything:
 - `rakeup`
 
 It'll create a brand new git repository.
-All you need is to create some stuff in the `subs` directory.
-Each sub being a part of your project (frontend, backend, git submodule,
-whatever...). The must is you have a Makefile in the `sub` you create.
+All you need is to create some stuff (your project folders) in this directory.
+Let's call those projects `subs`.
+Each `sub` is a part of your project (frontend, backend, git submodule,
+whatever...).
+
+==The must is that you have to have a Makefile== in the `sub` you create.
 
 ## Why You'll Get Raked With Joy
 
@@ -50,6 +53,9 @@ project? `make backend test`. Want to build just the frontend? `make frontend
 build`. Want to deploy the whole shebang? `make frontend deploy && make backend
 deploy`. `rake` gives you the power to compose complex operations from simple,
 predictable building blocks.
+Icing on the cake, due to how `rake` is built, you can perfectly rely on
+autocomplete features of your shell to make `rake` even easier to use: your
+`subs` are directories.
 
 **Battle-tested foundation:** Built on `git`, `make` and `bash` – tools that
 have been solving build problems since before most of us were born. If it works
@@ -69,21 +75,3 @@ stuff instead of fighting with your tooling.
 
 Ready to enter the `rake` world? Your future self will thank you for choosing
 simplicity.
-
-## Rough unserious and simple roadmap
-
-- [ ] provide abbreviation for subs for user user convenience
-  - For instance, if there is only one `sub` beginning with the letter `n` such
-    as `nideovim`, the user can type either:
-    - `make nideovim ...`
-    - `make n ...`
-  - make sure there is no ambiguity in user inputs
-  - make it work for beginning of sub name but also for
-    - ending sub name:
-      - `nideovim` and `nideovim2` can be targeted by `nm` and `n2`
-        respectively
-    - split names by separator such as `-` or `_`
-      - `nideovim-test` and `nideovim-prod` can be targeted by `nt` and `np`
-        respectively
-      - and with `nd` for `nideovim-prod`
-      - and with `nideovim-t` and `nideovim-p` respectively

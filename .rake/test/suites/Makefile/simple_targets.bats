@@ -3,10 +3,10 @@ setup_file() {
 }
 
 setup() {
-  load "${RAKE_ROOT_DIR}test/test_helper/bats-support/load"
-  load "${RAKE_ROOT_DIR}test/test_helper/bats-assert/load"
+  load "${RAKE_ROOT_DIR}.rake/test/test_helper/bats-support/load"
+  load "${RAKE_ROOT_DIR}.rake/test/test_helper/bats-assert/load"
 
-  load "${RAKE_ROOT_DIR}test/test_helper/test_functions.sh"
+  load "${RAKE_ROOT_DIR}.rake/test/test_helper/test_functions.sh"
 
   setup_copy_rake_in_tmpdir
 }
@@ -22,8 +22,8 @@ teardown() {
 }
 
 @test 'a target is forwarded to sub even if a simple target exists in main Makefile' {
-  mkdir -p "${RAKE_ROOT_DIR}subs/mysub"
-  cat <<EOF >"${RAKE_ROOT_DIR}subs/mysub/Makefile"
+  mkdir -p "${RAKE_ROOT_DIR}.rake/mysub"
+  cat <<EOF >"${RAKE_ROOT_DIR}.rake/mysub/Makefile"
 help:
 	@echo mysub help target
 EOF

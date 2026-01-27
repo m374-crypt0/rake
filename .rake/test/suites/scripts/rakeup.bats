@@ -3,11 +3,11 @@ setup_file() {
 }
 
 setup() {
-  load "${RAKE_ROOT_DIR}test/test_helper/bats-support/load"
-  load "${RAKE_ROOT_DIR}test/test_helper/bats-assert/load"
-  load "${RAKE_ROOT_DIR}test/test_helper/bats-file/load"
+  load "${RAKE_ROOT_DIR}.rake/test/test_helper/bats-support/load"
+  load "${RAKE_ROOT_DIR}.rake/test/test_helper/bats-assert/load"
+  load "${RAKE_ROOT_DIR}.rake/test/test_helper/bats-file/load"
 
-  load "${RAKE_ROOT_DIR}test/test_helper/test_functions.sh"
+  load "${RAKE_ROOT_DIR}.rake/test/test_helper/test_functions.sh"
 }
 
 teardown() {
@@ -19,7 +19,7 @@ teardown() {
     touch "${BATS_TEST_TMPDIR}/dir/a_file" &&
     cd "${BATS_TEST_TMPDIR}/dir"
 
-  run "${RAKE_ROOT_DIR}scripts/rakeup"
+  run "${RAKE_ROOT_DIR}.rake/scripts/rakeup"
 
   assert_not_equal $status 0
   assert_output 'rakeup: call rakeup within an empty directory'
@@ -32,7 +32,7 @@ teardown() {
     mkdir inner &&
     cd inner
 
-  run "${RAKE_ROOT_DIR}scripts/rakeup"
+  run "${RAKE_ROOT_DIR}.rake/scripts/rakeup"
 
   assert_not_equal $status 0
   assert_output 'rakeup: do not rakeup within an existing git repository'
@@ -42,7 +42,7 @@ teardown() {
   mkdir -p "${BATS_TEST_TMPDIR}/dir" &&
     cd "${BATS_TEST_TMPDIR}/dir"
 
-  run "${RAKE_ROOT_DIR}scripts/rakeup"
+  run "${RAKE_ROOT_DIR}.rake/scripts/rakeup"
 
   run git status
   assert_equal $status 0

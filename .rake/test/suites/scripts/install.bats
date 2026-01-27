@@ -4,13 +4,13 @@ setup_file() {
 }
 
 setup() {
-  load "${RAKE_ROOT_DIR}test/test_helper/bats-support/load"
-  load "${RAKE_ROOT_DIR}test/test_helper/bats-assert/load"
-  load "${RAKE_ROOT_DIR}test/test_helper/bats-file/load"
+  load "${RAKE_ROOT_DIR}.rake/test/test_helper/bats-support/load"
+  load "${RAKE_ROOT_DIR}.rake/test/test_helper/bats-assert/load"
+  load "${RAKE_ROOT_DIR}.rake/test/test_helper/bats-file/load"
 
-  load "${RAKE_ROOT_DIR}test/test_helper/test_functions.sh"
+  load "${RAKE_ROOT_DIR}.rake/test/test_helper/test_functions.sh"
 
-  load "${RAKE_ROOT_DIR}scripts/error_codes.sh"
+  load "${RAKE_ROOT_DIR}.rake/scripts/error_codes.sh"
 }
 
 teardown() {
