@@ -12,6 +12,27 @@ call_forward_to_sub() {
   bash -c ". ${RAKE_ROOT_DIR}scripts/forward_to_sub.sh $1"
 }
 
+create_sub_and_target() {
+  local sub &&
+    sub="$1"
+  local target &&
+    target="$2"
+
+  mkdir -p "${RAKE_ROOT_DIR}subs/${sub}"
+
+  cat <<EOF >"${RAKE_ROOT_DIR}subs/${sub}/makefile"
+${target}:
+	@echo I am a fancy target
+EOF
+}
+
+read_sub_from_registered_sub_file() {
+  local sub_name &&
+    read -r sub_name <<<"$(cat "${RAKE_ROOT_DIR}runs/.registered_sub")"
+
+  echo "$sub_name"
+}
+
 setup_file() {
   bats_require_minimum_version 1.5.0
 }
@@ -33,12 +54,17 @@ teardown() {
   [ ! -f "${RAKE_ROOT_DIR}runs/.last_sub" ]
 }
 
-@test 'call to forward_to_sub with any target registers it in .registered_sub file in runs directory' {
-  local target_name
+@test 'each call to forward_to_sub from different parent process register a new sub' {
+  local first_sub &&
+    first_sub=first_sub
+  local second_sub &&
+    second_sub=second_sub
 
-  run call_forward_to_sub foo_target
+  call_forward_to_sub "$first_sub"
+  run read_sub_from_registered_sub_file
+  assert_output "$first_sub"
 
-  read -r target_name <<<"$(cat "${RAKE_ROOT_DIR}runs/.registered_sub")"
-
-  assert_equal "$target_name" foo_target
+  call_forward_to_sub "$second_sub"
+  run read_sub_from_registered_sub_file
+  assert_output "$second_sub"
 }
