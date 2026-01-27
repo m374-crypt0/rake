@@ -2,11 +2,73 @@
 
 # shellcheck source=../../../scripts/error_codes.sh
 . "${RAKE_ROOT_DIR}scripts/error_codes.sh"
+. "${FUNCSHIONAL_ROOT_DIR}src/funcshional.sh"
 
-main() {
+list_directories_in_subs() {
+  local subs_directory && subs_directory="${RAKE_ROOT_DIR}subs/"
+
+  find "$subs_directory" \
+    -mindepth 1 \
+    -maxdepth 1 \
+    -type d
+}
+
+only_not_sub() {
+  local subs_directory && subs_directory="${RAKE_ROOT_DIR}subs/"
+  local sub && sub="$1"
+
+  [ "$sub" != "${subs_directory}sub" ]
+}
+
+only_valid_sub() {
+  local subs_directory && subs_directory="${RAKE_ROOT_DIR}subs/"
+  local sub && sub="$1"
+
+  [ -f "${subs_directory}${sub}/Makefile" ]
+}
+
+report_no_sub() {
   echo There is no sub >&2
 
   return $RAKE_NO_SUB
+}
+
+report_no_valid_sub_directories() (
+  # shellcheck disable=SC2329
+  format_invalid_sub_directory() {
+    echo "- $(basename "$1")" >&2
+  }
+
+  echo There is no valid sub >&2
+  echo "Following sub directories are missing a 'Makefile':" >&2
+
+  echo "$1" |
+    transform_first format_invalid_sub_directory
+
+  return $RAKE_NO_VALID_SUB
+)
+
+let_sub_directories() {
+  lift list_directories_in_subs |
+    and_then filter_first only_not_sub |
+    and_then any |
+    or_else report_no_sub |
+    unlift
+}
+
+let_valid_sub_directories() {
+  lift echo "$1" |
+    and_then filter_first only_valid_sub |
+    and_then any |
+    or_else report_no_valid_sub_directories "$1" |
+    unlift
+}
+
+main() {
+  local sub_directories &&
+    sub_directories="$(let_sub_directories)" &&
+    local valid_sub_directories &&
+    valid_sub_directories="$(let_valid_sub_directories "$sub_directories")"
 }
 
 main

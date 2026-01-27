@@ -1,13 +1,16 @@
+# TODO: specific option settings
 MAKEFLAGS += --no-print-directory
 
+# TODO: specific rake variable settiings
+SHELL := /bin/bash
 RAKE_ROOT_DIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 
-SHELL := /bin/bash
+# TODO: specific dependency setup
+FUNCSHIONAL_ROOT_DIR := ${RAKE_ROOT_DIR}scripts/lib/funcshional/
 
 export
 
 # simple targets
-
 .PHONY: help
 help:
 	@. ${RAKE_ROOT_DIR}/scripts/help.sh
