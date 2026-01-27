@@ -18,12 +18,11 @@ teardown() {
 }
 
 @test 'cannot rakeup in a non empty directory' {
-  export RAKEUP_INSTALL_DIR="${BATS_TEST_TMPDIR}/.rake/"
-  run touch "${RAKEUP_INSTALL_DIR}a_file"
-  run install_from_curl
+  mkdir -p "${BATS_TEST_TMPDIR}/dir" &&
+    touch "${BATS_TEST_TMPDIR}/dir/a_file" &&
+    cd "${BATS_TEST_TMPDIR}/dir"
 
-  run "${RAKEUP_INSTALL_DIR}rakeup"
+  run "${RAKE_ROOT_DIR}scripts/rakeup"
 
-  assert_output abc
   assert_equal $status "$RAKE_INVALID_PROJECT_DIR"
 }

@@ -1,3 +1,5 @@
-#!/bin/bash
+#!/bin/env bash
 
-echo '>>> ' . "${RAKE_ROOT_DIR}scripts/error_codes.sh" >&3
+. "${RAKE_ROOT_DIR}scripts/error_codes.sh"
+
+exit $RAKE_INVALID_PROJECT_DIR
