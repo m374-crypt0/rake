@@ -38,8 +38,14 @@ teardown() {
   assert_output $'b\nc\nfa\nfo'
 }
 
-@test 'strings that differentiate by only their last string do not have aliases' {
+@test 'strings that hase the same last letter sequence but of different size do not have aliases' {
   run shortest_deterministic_aliases $'foo\nfooo\nfoooo'
 
   assert_output $'foo\nfooo\nfoooo'
+}
+
+@test 'aliases can be built from last letters of strings' {
+  run shortest_deterministic_aliases $'foo\nfool'
+
+  assert_output $'fo\nfl'
 }

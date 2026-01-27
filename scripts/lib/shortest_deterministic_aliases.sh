@@ -93,21 +93,67 @@ remove_all_duplicate() {
   sink | sort | uniq -u
 }
 
-ensure_original_strings_are_included() {
-  sink | append "$stream" | sort | uniq
-}
-
 output_shortest_aliases() {
   sink | fold_first to_shortest_aliases '' "$stream"
+}
+
+apply_non_shuffling_algorithm() {
+  local stream && stream="$1"
+
+  echo "$stream" |
+    transform_first split_letter_sequences |
+    fold_first to_stream '' |
+    remove_all_duplicate |
+    output_shortest_aliases
+}
+
+alias_is_2_or_less_in_size() {
+  local alias && alias="$1"
+
+  [ ${#alias} -le 2 ]
+}
+
+stop_if_aliases_are_short_enough() {
+  sink |
+    filter_first alias_is_2_or_less_in_size |
+    any
+}
+
+apply_shuffling_algorithm() {
+  local stream && stream="$1"
+
+  echo "$stream"
 }
 
 shortest_deterministic_aliases() {
   local stream &&
     stream="$(check_and_sort_stream "$1")" &&
-    echo "$stream" |
-    transform_first split_letter_sequences |
-      fold_first to_stream '' |
-      remove_all_duplicate |
-      ensure_original_strings_are_included |
-      output_shortest_aliases
+    lift apply_non_shuffling_algorithm "$stream" |
+    and_then stop_if_aliases_are_short_enough |
+      or_else apply_shuffling_algorithm "$stream" |
+      unlift
 }
+
+# TODO: help to design, delete as soon as possible
+: '
+There are some steps to add to ensure aliases are computed from left to right
+and from right to left:
+- First, determine if shuffling-based algorithm is needed:
+  - if non shuffling aliases are both less than 3 in size: not needed
+  - if either non shuffling aliases is 3 or more in size: needed
+- Then, need to quantify how many time at maximum the shuffle based algorithm
+  must apply:
+  - it depends on the smallest string in the stream
+  - it is actually the size of the smallest string at maximum
+    - it could be less if any of resulting aliases are of size 2.
+- Then, determine how many shuffling are needed for all string in the stream
+- A shuffling is a way to well, shuffle string this way:
+  - consider the string ABCD
+  - by shuffling the string you will obtain:
+    - ADCB
+    - ABDC
+  - More shuffling is unnecessary cause you will find the origin ABCD string
+  - The number of shuffles is depending of the string size: N - 2
+  - after each shuffle, apply the already designed algorithm
+- Then, select resulting aliases tuple that are the shortest
+'
