@@ -1,4 +1,3 @@
-# bats file_tags=bats:focus
 # shellcheck disable=SC2031,SC2030
 setup_file() {
   bats_require_minimum_version 1.5.0

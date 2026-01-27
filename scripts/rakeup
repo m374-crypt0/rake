@@ -62,6 +62,10 @@ help:
 EOF
 }
 
+modify_help_script() {
+  sed -i -E '/contribution:/,/EOF/{/EOF/!d;}' scripts/help.sh
+}
+
 init_rake_project() {
   git clone https://github.com/MetaBarj0/rake.git &&
     cd rake &&
@@ -72,6 +76,7 @@ init_rake_project() {
     rm -r rake &&
     remove_dev_files &&
     modify_makefile &&
+    modify_help_script &&
     git init
 }
 
