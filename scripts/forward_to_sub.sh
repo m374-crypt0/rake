@@ -3,11 +3,17 @@
 # shellcheck source=error_codes.sh
 . "${RAKE_ROOT_DIR}scripts/error_codes.sh"
 
+error() {
+  echo "$@" >&2
+}
+
 add_target_to_compound_target_chain() {
   local target &&
     target="$1"
 
   if [ "$target" != sub ]; then
+    error There is no sub
+
     return $RAKE_NO_SUB
   fi
 
