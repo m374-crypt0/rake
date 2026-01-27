@@ -1,9 +1,17 @@
 MAKEFLAGS += --no-print-directory
 
-ROOT_DIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
+RAKE_ROOT_DIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
+
+SHELL := /bin/bash
 
 export
 
 .PHONY: help
 help:
-	@. ${ROOT_DIR}/scripts/$@.sh
+	@. ${RAKE_ROOT_DIR}/scripts/help.sh
+
+run_rake_tests:
+	@. ${RAKE_ROOT_DIR}/test/test.sh
+
+watch_rake_tests:
+	@. ${RAKE_ROOT_DIR}/test/watch.sh
