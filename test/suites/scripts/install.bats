@@ -1,3 +1,4 @@
+# bats file_tags=bats:focus
 # shellcheck disable=SC2031,SC2030
 setup_file() {
   bats_require_minimum_version 1.5.0
@@ -26,7 +27,7 @@ teardown() {
   assert_file_exists "${RAKEUP_INSTALL_DIR}/rakeup"
 }
 
-@test 'install only support does only support bash for path registration' {
+@test 'install does only support bash for path registration' {
   export HOME="${BATS_TEST_TMPDIR}"
   export RAKEUP_INSTALL_DIR="${HOME}/.rake/"
   export SHELL="/bin/badsh"
@@ -43,4 +44,8 @@ teardown() {
 
   load "${HOME}/.bashrc"
   [[ ":$PATH:" == *":${RAKEUP_INSTALL_DIR}:"* ]]
+
+  run rakeup
+
+  assert_output 'rakeup: call rakeup within an empty directory'
 }
