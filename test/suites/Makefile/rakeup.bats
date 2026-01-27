@@ -15,6 +15,8 @@ teardown() {
   :
 }
 
-@test 'todo' {
-  refute
+@test 'ensure rakeup is executable' {
+  run "${RAKE_ROOT_DIR}scripts/rakeup"
+
+  assert_equal $status 0
 }
