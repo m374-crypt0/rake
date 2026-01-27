@@ -14,16 +14,16 @@ call_forward_to_sub() {
 create_sub_directory() {
   local sub && sub="$1"
 
-  mkdir -p "${RAKE_ROOT_DIR}.rake/${sub}"
+  mkdir -p "${RAKE_ROOT_DIR}${sub}"
 }
 
 create_sub_target() {
   local sub && sub="$1"
   local target && target="$2"
 
-  mkdir -p "${RAKE_ROOT_DIR}.rake/${sub}"
+  mkdir -p "${RAKE_ROOT_DIR}${sub}"
 
-  cat <<EOF >"${RAKE_ROOT_DIR}.rake/${sub}/Makefile"
+  cat <<EOF >"${RAKE_ROOT_DIR}${sub}/Makefile"
 ${target}:
 	@echo I am $target target
 EOF

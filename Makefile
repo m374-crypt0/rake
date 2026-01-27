@@ -1,7 +1,7 @@
 # TODO: specific option settings
 MAKEFLAGS += --no-print-directory
 
-# TODO: specific rake variable settiings
+# TODO: specific rake variable settings
 SHELL := /bin/bash
 RAKE_ROOT_DIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 
@@ -30,7 +30,10 @@ watch_rake_tests: init_submodules
 	@. ${RAKE_ROOT_DIR}.rake/test/watch.sh
 
 # compound targets are forwarded to a potential sub
-# NOTE: putting a dependency for this target breaks all the thing
-.PHONY: %
-%:
+# NOTE: This FORCE target is to correctly handle subs that are directory and as
+# such, considered up to date for make
+.PHONY: FORCE
+FORCE:;
+
+%: FORCE
 	@. ${RAKE_ROOT_DIR}.rake/scripts/forward_to_sub.sh $@

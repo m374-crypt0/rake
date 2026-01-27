@@ -22,8 +22,8 @@ teardown() {
 }
 
 @test 'a target is forwarded to sub even if a simple target exists in main Makefile' {
-  mkdir -p "${RAKE_ROOT_DIR}.rake/mysub"
-  cat <<EOF >"${RAKE_ROOT_DIR}.rake/mysub/Makefile"
+  mkdir -p "${RAKE_ROOT_DIR}mysub"
+  cat <<EOF >"${RAKE_ROOT_DIR}mysub/Makefile"
 help:
 	@echo mysub help target
 EOF

@@ -52,7 +52,7 @@ teardown() {
   create_sub_and_target testing_sub print
 
   local direct_make_output &&
-    direct_make_output="$(make -C "${RAKE_ROOT_DIR}.rake/testing_sub" print)"
+    direct_make_output="$(make -C "${RAKE_ROOT_DIR}testing_sub" print)"
 
   run call_forward_to_sub testing_sub "$(testing_ppid_provider)"
   run call_forward_to_sub print "$(testing_ppid_provider)"

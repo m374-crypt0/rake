@@ -5,22 +5,13 @@
 
 . "${FUNCSHIONAL_ROOT_DIR}src/funcshional.sh"
 
-list_directories_in_subs() {
-  local subs_directory && subs_directory="${RAKE_ROOT_DIR}.rake/"
-
-  find "$subs_directory" \
+list_subs() {
+  find "$RAKE_ROOT_DIR" \
     -mindepth 1 \
     -maxdepth 1 \
-    -not -name test \
-    -not -name scripts \
+    -not -name .rake \
+    -not -name .git \
     -type d
-}
-
-exclude_internal_subs() {
-  local subs_directory && subs_directory="${RAKE_ROOT_DIR}.rake/"
-  local sub && sub="$1"
-
-  [ "$sub" != "${subs_directory}sub" ]
 }
 
 only_valid_sub() {
@@ -51,8 +42,7 @@ report_no_valid_sub_directories() (
 )
 
 let_sub_directories() {
-  lift list_directories_in_subs |
-    and_then filter_first exclude_internal_subs |
+  lift list_subs |
     and_then any |
     or_else report_no_sub |
     unlift

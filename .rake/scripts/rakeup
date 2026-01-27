@@ -20,16 +20,17 @@ ensure_not_git_repository() {
 
 remove_dev_files() {
   rm -rf \
-    .git .gitignore .gitmodules test/ \
-    scripts/install scripts/rakeup &&
-    find scripts/lib/funcshional \
+    .git .gitignore .gitmodules \
+    .rake/scripts/install .rake/scripts/rakeup \
+    .rake/test &&
+    find .rake/scripts/lib/funcshional \
       -maxdepth 1 -type f,d \
       -not -name src -not -name funcshional \
       -exec rm -rf {} \;
 }
 
 remove_dev_git_modules() {
-  git rm test/bats test/test_helper/bats-*
+  git rm .rake/test/bats .rake/test/test_helper/bats-*
 }
 
 modify_makefile() {
@@ -37,12 +38,12 @@ modify_makefile() {
 # TODO: specific option settings
 MAKEFLAGS += --no-print-directory
 
-# TODO: specific rake variable settiings
+# TODO: specific rake variable settings
 SHELL := /bin/bash
 RAKE_ROOT_DIR := \$(dir \$(realpath \$(lastword \$(MAKEFILE_LIST))))
 
 # TODO: specific dependency setup
-FUNCSHIONAL_ROOT_DIR := \${RAKE_ROOT_DIR}scripts/lib/funcshional/
+FUNCSHIONAL_ROOT_DIR := \${RAKE_ROOT_DIR}.rake/scripts/lib/funcshional/
 
 export
 .PHONY: help
@@ -51,18 +52,18 @@ export
 # TODO: first, present compound targets then simple targets that are more for
 # internal purposes
 help:
-	@. \${RAKE_ROOT_DIR}/scripts/help.sh
+	@. \${RAKE_ROOT_DIR}.rake/scripts/help.sh
 
 # compound targets are forwarded to a potential sub
 # NOTE: putting a dependency for this target breaks all the thing
 .PHONY: %
 %:
-	@. \${RAKE_ROOT_DIR}/scripts/forward_to_sub.sh \$@
+	@. \${RAKE_ROOT_DIR}.rake/scripts/forward_to_sub.sh \$@
 EOF
 }
 
 modify_help_script() {
-  sed -i -E '/contribution:/,/EOF/{/EOF/!d;}' scripts/help.sh
+  sed -i -E '/contribution:/,/EOF/{/EOF/!d;}' .rake/scripts/help.sh
 }
 
 init_rake_project() {

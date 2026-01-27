@@ -32,7 +32,22 @@ register_sub() {
 is_valid_sub() {
   local sub && sub="$1"
 
-  [ -f "${RAKE_ROOT_DIR}.rake/${sub}/Makefile" ]
+  [ -f "${RAKE_ROOT_DIR}${sub}/Makefile" ]
+}
+
+get_sub_target_if_exists() {
+  local sub && sub="$1"
+
+  if [ -d "${RAKE_ROOT_DIR}${sub}" ]; then
+    echo "$sub"
+  elif [ -d "${RAKE_ROOT_DIR}.rake/${sub}" ]; then
+    echo ".rake/$sub"
+  else
+    echo "$sub"
+
+    return 1
+  fi
+
 }
 
 make_sub_target_if_sub_exists() {
@@ -41,29 +56,34 @@ make_sub_target_if_sub_exists() {
   local sub &&
     read -r _ sub <<<"$(cat "${RAKE_ROOT_DIR}.rake/.registered_sub")"
 
-  if ! does_sub_exist "$sub"; then
-    echo "The '$sub' sub does not exist"
+  local valid_sub_path &&
+    if ! valid_sub_path="$(get_sub_target_if_exists "$sub")"; then
+      echo "The '$sub' sub does not exist"
 
-    return $RAKE_SUB_DOES_NOT_EXIST
-  fi
+      return $RAKE_SUB_DOES_NOT_EXIST
+    fi
 
-  if ! is_valid_sub "$sub"; then
+  if ! is_valid_sub "$valid_sub_path"; then
     echo "The '$sub' sub is missing a 'Makefile'"
 
     return $RAKE_INVALID_SUB_DIRECTORY
   fi
 
-  make -s -C "${RAKE_ROOT_DIR}.rake/${sub}" "$target"
+  make -s -C "${RAKE_ROOT_DIR}${valid_sub_path}" "$target"
 }
 
-does_sub_exist() {
-  local sub && sub="$1"
+is_ignorable_target() {
+  local target && target="$1"
 
-  [ -d "${RAKE_ROOT_DIR}.rake/${sub}" ]
+  [ "$target" = Makefile ] ||
+    [[ "$target" == */Makefile ]] && return
 }
 
 main() {
   local target && target="$1"
+
+  is_ignorable_target "$target" && return
+
   local ppid_provider && ppid_provider="$2"
 
   local ppid && ppid="$(get_ppid "$ppid_provider")"
