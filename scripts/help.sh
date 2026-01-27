@@ -8,6 +8,7 @@ usage:
 
 make <SIMPLE TARGET> where <SIMPLE TARGET> belongs to:
 
+- init_submodules: init required git submodules (testing and dependencies)
 - help: print this message
 - run_rake_tests: run all test suites
 - watch_rake_tests: continuously run all test suites (for dev purposes)

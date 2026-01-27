@@ -16,3 +16,10 @@
 - features
   - [x] provides a `help` target that is the default one
   - [x] can list all existing `sub`s
+    - [ ] only if rake has been installed in another user specified directory
+      - [ ] otherwise tell the user what to do
+      - [ ] enrich README and help system in that sense
+  - separate contribution from usage (see below)
+  - [ ] can install `rake` in a user specified directory
+    - [ ] directory must not exist or be empty
+    - [ ] initialize a git repository
