@@ -61,27 +61,3 @@ teardown() {
   assert_equal $status 0
   assert_regex "$output" 'fancy_sub'
 }
-
-@test 'compound abbreviated targets just work' {
-  # TODO: unskip this one
-  skip 'need a suite of unit tests'
-
-  create_sub_and_target mysub print_mysub
-  create_sub_and_target yoursub print_yoursub
-
-  run make -C "${RAKE_ROOT_DIR}" mysub print_mysub
-  assert_equal $status 0
-  assert_output 'I am print_mysub target'
-
-  run make -C "${RAKE_ROOT_DIR}" yoursub print_yoursub
-  assert_equal $status 0
-  assert_output 'I am print_yoursub target'
-
-  run make -C "${RAKE_ROOT_DIR}" m print_mysub
-  assert_equal $status 0
-  assert_output 'I am print_mysub target'
-
-  run make -C "${RAKE_ROOT_DIR}" y print_yoursub
-  assert_equal $status 0
-  assert_output 'I am print_yoursub target'
-}

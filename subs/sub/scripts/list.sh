@@ -78,8 +78,7 @@ append_alias() {
 main() {
   local sub_directories &&
     sub_directories="$(let_sub_directories)" &&
-    let_valid_sub_directories "$sub_directories" |
-    transform_first append_alias
+    let_valid_sub_directories "$sub_directories"
 }
 
 main

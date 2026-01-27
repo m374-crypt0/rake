@@ -21,19 +21,6 @@ teardown() {
 
   run make -C "$RAKE_ROOT_DIR" sub list
 
-  assert_regex "$output" 'foo \(alias: f\)'
-  assert_regex "$output" 'bar \(alias: b\)'
-}
-
-@test 'sub list outputs alias info for similar subs using start and end of sub name' {
-  # TODO: unskip this
-  skip 'too much complexity to break down, shortest alias algorithm'
-
-  create_sub_and_target foo target
-  create_sub_and_target foobar target
-
-  run make -C "$RAKE_ROOT_DIR" sub list
-
-  assert_regex "$output" 'foo \(alias: fo\)'
-  assert_regex "$output" 'foobar \(alias: fr\)'
+  assert_output 'bar
+foo'
 }
