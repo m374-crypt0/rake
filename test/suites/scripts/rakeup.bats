@@ -1,4 +1,3 @@
-# bats file_tags=bats:focus
 setup_file() {
   bats_require_minimum_version 1.5.0
 }
@@ -37,4 +36,17 @@ teardown() {
 
   assert_not_equal $status 0
   assert_output 'rakeup: do not rakeup within an existing git repository'
+}
+
+@test 'rakeup in a valid dir create an empty rake project and initialize a git repository' {
+  mkdir -p "${BATS_TEST_TMPDIR}/dir" &&
+    cd "${BATS_TEST_TMPDIR}/dir"
+
+  run "${RAKE_ROOT_DIR}scripts/rakeup"
+
+  run git status
+  assert_equal $status 0
+
+  run make sub list
+  assert_regex "$output" 'There is no sub'
 }

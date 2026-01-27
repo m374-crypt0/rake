@@ -19,9 +19,66 @@ ensure_not_git_repository() {
   fi
 }
 
+remove_dev_files() {
+  rm -rf \
+    .git .gitignore .gitmodules test/ \
+    scripts/install scripts/rakeup &&
+    find scripts/lib/funcshional \
+      -maxdepth 1 -type f,d \
+      -not -name src -not -name funcshional \
+      -exec rm -rf {} \;
+}
+
+remove_dev_git_modules() {
+  git rm test/bats test/test_helper/bats-*
+}
+
+modify_makefile() {
+  cat <<EOF >Makefile
+# TODO: specific option settings
+MAKEFLAGS += --no-print-directory
+
+# TODO: specific rake variable settiings
+SHELL := /bin/bash
+RAKE_ROOT_DIR := \$(dir \$(realpath \$(lastword \$(MAKEFILE_LIST))))
+
+# TODO: specific dependency setup
+FUNCSHIONAL_ROOT_DIR := \${RAKE_ROOT_DIR}scripts/lib/funcshional/
+
+export
+.PHONY: help
+
+# simple targets
+# TODO: first, present compound targets then simple targets that are more for
+# internal purposes
+help:
+	@. \${RAKE_ROOT_DIR}/scripts/help.sh
+
+# compound targets are forwarded to a potential sub
+# NOTE: putting a dependency for this target breaks all the thing
+.PHONY: %
+%:
+	@. scripts/forward_to_sub.sh \$@
+EOF
+}
+
+init_rake_project() {
+  git clone https://github.com/MetaBarj0/rake.git &&
+    cd rake &&
+    remove_dev_git_modules &&
+    git submodule update --init &&
+    cd .. &&
+    mv rake/* rake/.* . &&
+    rm -r rake &&
+    remove_dev_files &&
+    modify_makefile &&
+    git init
+}
+
 main() {
   ensure_directory_empty &&
-    ensure_not_git_repository
+    ensure_not_git_repository &&
+    init_rake_project
 }
 
 main
