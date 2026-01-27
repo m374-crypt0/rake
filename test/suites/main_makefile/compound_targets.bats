@@ -20,7 +20,6 @@ teardown() {
 @test 'sub list reports if there is no sub and fails' {
   run make -C "$RAKE_ROOT_DIR" sub list
 
-  # TODO: create a specific assertion for makefile return error code
   assert_not_equal $status 0
   assert_regex "$output" "There is no sub"
   assert_regex "$output" ".*Error ${RAKE_NO_SUB}"
@@ -38,4 +37,18 @@ teardown() {
   assert_regex "$output" "Following sub directories are missing a 'Makefile':"
   assert_regex "$output" "- invalid_sub_1"
   assert_regex "$output" "- invalid_sub_2"
+}
+
+@test 'Sub list reports all valid sub found' {
+  skip
+  create_sub_and_target fancy_sub print
+  create_sub_and_target snappy_sub yell
+  create_sub_and_target shitty_sub poop
+
+  run make -C "$RAKE_ROOT_DIR" sub list
+
+  assert_equal $status 0
+  assert_regex "$output" "^fancy_sub$"
+  assert_regex "$output" "^snappy_sub$"
+  assert_regex "$output" "^shitty_sub$"
 }

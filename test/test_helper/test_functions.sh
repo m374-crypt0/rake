@@ -44,3 +44,8 @@ read_sub_from_registered_sub_file() {
 testing_ppid_provider() {
   echo "'echo 42'"
 }
+
+pause_test() {
+  echo ">>> $RAKE_ROOT_DIR" >&3
+  read -er
+}

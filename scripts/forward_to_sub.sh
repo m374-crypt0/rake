@@ -14,7 +14,8 @@ get_ppid() {
 is_sub_registered_for_ppid() {
   local ppid && ppid="$1"
 
-  local registered_sub_ppid &&
+  [ -f "${RAKE_ROOT_DIR}runs/.registered_sub" ] &&
+    local registered_sub_ppid &&
     read -r registered_sub_ppid _ <<<"$(cat "${RAKE_ROOT_DIR}runs/.registered_sub")"
 
   [ -n "$registered_sub_ppid" ] &&
@@ -25,7 +26,7 @@ register_sub() {
   local ppid && ppid="$1"
   local target && target="$2"
 
-  echo "$ppid $target" >"${RAKE_ROOT_DIR}"runs/.registered_sub
+  echo "$ppid $target" >"${RAKE_ROOT_DIR}runs/.registered_sub"
 }
 
 is_valid_sub() {
@@ -38,7 +39,7 @@ make_sub_target_if_sub_exists() {
   local target && target="$1"
 
   local sub &&
-    read -r _ sub <<<"$(cat "${RAKE_ROOT_DIR}"runs/.registered_sub)"
+    read -r _ sub <<<"$(cat "${RAKE_ROOT_DIR}runs/.registered_sub")"
 
   if ! does_sub_exist "$sub"; then
     echo "The '$sub' sub does not exist"

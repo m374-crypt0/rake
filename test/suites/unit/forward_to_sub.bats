@@ -24,6 +24,16 @@ teardown() {
   assert_file_not_exists "${RAKE_ROOT_DIR}runs/.last_sub"
 }
 
+@test 'call once to forward_to_sub with a target create a .registered_sub file in runs' {
+  assert_file_not_exists "${RAKE_ROOT_DIR}runs/.registered_sub"
+
+  run call_forward_to_sub testing_sub
+
+  assert_equal $status 0
+  assert_output ''
+  assert_file_exists "${RAKE_ROOT_DIR}runs/.registered_sub"
+}
+
 @test 'each call to forward_to_sub from different parent process register a new sub' {
   run call_forward_to_sub first_sub
   local first_read_sub && local second_read_sub &&
