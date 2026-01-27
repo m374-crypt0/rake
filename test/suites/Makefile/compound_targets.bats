@@ -39,7 +39,7 @@ teardown() {
   assert_regex "$output" "- invalid_sub_2"
 }
 
-@test 'Sub list reports all valid sub found' {
+@test 'Sub list reports all valid subs found' {
   create_sub_and_target fancy_sub print
   create_sub_and_target snappy_sub yell
   create_sub_and_target shitty_sub poop
@@ -50,4 +50,14 @@ teardown() {
   assert_output 'shitty_sub
 snappy_sub
 fancy_sub'
+}
+
+@test 'Sub list report all valid subs found even outside of rake directory' {
+  create_sub_and_target fancy_sub print
+  cd "$BATS_TEST_TMPDIR"
+
+  run make -f "$RAKE_ROOT_DIR"/Makefile sub list
+
+  assert_equal $status 0
+  assert_output 'fancy_sub'
 }

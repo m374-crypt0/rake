@@ -33,4 +33,4 @@ watch_rake_tests: init_submodules
 # NOTE: putting a dependency for this target breaks all the thing
 .PHONY: %
 %:
-	@. scripts/forward_to_sub.sh $@
+	@. ${RAKE_ROOT_DIR}/scripts/forward_to_sub.sh $@
