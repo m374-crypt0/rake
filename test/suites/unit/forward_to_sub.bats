@@ -33,8 +33,8 @@ teardown() {
   [ ! -f "${RAKE_ROOT_DIR}runs/.last_sub" ]
 }
 
-@test 'call to forward_to_sub with sub target creates .last_sub file in runs directory' {
-  run call_forward_to_sub sub
+@test 'call to forward_to_sub with any target creates .registered_sub file in runs directory' {
+  run call_forward_to_sub foo_target
 
-  [ -f "${RAKE_ROOT_DIR}runs/.last_sub" ]
+  [ -f "${RAKE_ROOT_DIR}runs/.registered_sub" ]
 }
