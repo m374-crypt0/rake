@@ -49,7 +49,7 @@ contribution:
       - run_rake_tests: run all test suites
       - watch_rake_tests: continuously run all test suites
       - init_submodules: init required git submodules
-  Adding internal subs si also possible, you have to create it within the
+  Adding internal subs is also possible, you have to create it within the
   special .rake directory. Take a look at the sub sub to get insight.
 EOF
 }

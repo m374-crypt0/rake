@@ -2,7 +2,7 @@
 
 RAKEUP_INSTALL_DIR="${RAKEUP_INSTALL_DIR:-$HOME/.rake/}"
 
-curl -L https://raw.githubusercontent.com/MetaBarj0/rake/refs/heads/main/scripts/rakeup \
+curl -L https://raw.githubusercontent.com/MetaBarj0/rake/refs/heads/main/.rake/scripts/rakeup \
   --create-dirs \
   --output "${RAKEUP_INSTALL_DIR}/rakeup" &&
   chmod +x "${RAKEUP_INSTALL_DIR}rakeup"
