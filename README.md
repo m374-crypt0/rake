@@ -15,4 +15,4 @@
 - A single root `main Makefile` that is able to delegate tasks to sub Makefiles
 - features
   - [x] provides a `help` target that is the default one
-  - [ ] can list all existing `sub`s
+  - [x] can list all existing `sub`s
