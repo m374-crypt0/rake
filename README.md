@@ -4,7 +4,9 @@
 
 - `main Makefile` the entry point. The user is intended to use this `Makefile` only.
 - `root directory` the directory where the `main Makefile` is located.
-- `sub` a sub-project located in a sub-directory within the `subs directory`
+- `sub` a sub-project located in a sub-directory within the `subs directory`.
+  The minimal requirement for a `sub` to be considered valid is the presence of
+  a `Makefile`
 - `subs directory` a special directory within the `root directory` that is not
   tracked by git as it contains all existing `sub`s
 
