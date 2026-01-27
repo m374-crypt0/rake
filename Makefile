@@ -19,7 +19,7 @@ help: init_submodules
 
 .PHONY: init_submodules
 init_submodules:
-	@git submodule update --init --recursive
+	@git submodule update --init --recursive >/dev/null 2>&1
 
 .PHONY: run_rake_tests
 run_rake_tests: init_submodules
