@@ -14,6 +14,24 @@ other `Makefiles`. That's it. No fancy frameworks, no mysterious magic, no PhD
 required. Just good old battle-tested `make`, `git` and `bash` doing what
 they've done reliably for decades.
 
+## Getting started
+
+Simple:
+
+`curl -L https://raw.githubusercontent.com/MetaBarj0/rake/refs/heads/main/scripts/install | bash`
+
+It will install `rakeup` in your user directory and you'll be able to `rake`
+everything:
+
+- `mkdir my-fancy-monorepo`
+- `cd my-fancy-monorepo`
+- `rakeup`
+
+It'll create a brand new git repository.
+All you need is to create some stuff in the `subs` directory.
+Each sub being a part of your project (frontend, backend, git submodule,
+whatever...). The must is you have a Makefile in the `sub` you create.
+
 ## Why You'll Get Raked With Joy
 
 **Perfect for the modern mono-repo reality:** Got a repo mixing Python
