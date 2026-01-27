@@ -10,8 +10,10 @@ export
 help:
 	@. ${RAKE_ROOT_DIR}/scripts/help.sh
 
+.PHONY: run_rake_tests
 run_rake_tests:
 	@. ${RAKE_ROOT_DIR}/test/test.sh
 
+.PHONY: watch_rake_tests
 watch_rake_tests:
 	@. ${RAKE_ROOT_DIR}/test/watch.sh

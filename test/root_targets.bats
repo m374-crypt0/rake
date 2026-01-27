@@ -11,6 +11,8 @@ teardown() {
   :
 }
 
-@test 'dummy' {
-  :
+@test 'help target succeeds and output something' {
+  run make -C "${RAKE_ROOT_DIR}" help
+
+  [ -n "$output" ]
 }
