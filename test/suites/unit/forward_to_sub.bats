@@ -40,6 +40,7 @@ setup_file() {
 setup() {
   load "${RAKE_ROOT_DIR}test/test_helper/bats-support/load"
   load "${RAKE_ROOT_DIR}test/test_helper/bats-assert/load"
+  load "${RAKE_ROOT_DIR}test/test_helper/bats-file/load"
 
   copy_rake_in_tmpdir
 }
@@ -51,7 +52,7 @@ teardown() {
 @test 'call to forward_to_sub without a target does not create .last_sub file in runs directory' {
   run call_forward_to_sub
 
-  [ ! -f "${RAKE_ROOT_DIR}runs/.last_sub" ]
+  assert_file_not_exists "${RAKE_ROOT_DIR}runs/.last_sub"
 }
 
 @test 'each call to forward_to_sub from different parent process register a new sub' {
