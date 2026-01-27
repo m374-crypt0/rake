@@ -1,0 +1,35 @@
+setup_copy_rake_in_tmpdir() {
+  cp -r "${RAKE_ROOT_DIR}" "$BATS_TEST_TMPDIR"
+  RAKE_ROOT_DIR="${BATS_TEST_TMPDIR}/rake/"
+}
+
+teardown_remove_rake_from_tmpdir() {
+  rm -rf "${BATS_TEST_TMPDIR}/rake"
+}
+
+call_forward_to_sub() {
+  bash -c ". ${RAKE_ROOT_DIR}scripts/forward_to_sub.sh $1 $2"
+}
+
+create_sub_and_target() {
+  local sub && sub="$1"
+  local target && target="$2"
+
+  mkdir -p "${RAKE_ROOT_DIR}subs/${sub}"
+
+  cat <<EOF >"${RAKE_ROOT_DIR}subs/${sub}/makefile"
+${target}:
+	@echo I am a fancy target
+EOF
+}
+
+read_sub_from_registered_sub_file() {
+  local sub_name && local ppid &&
+    read -r sub_name ppid <<<"$(cat "${RAKE_ROOT_DIR}runs/.registered_sub")"
+
+  echo "$sub_name $ppid"
+}
+
+testing_ppid_provider() {
+  echo "'echo 42'"
+}

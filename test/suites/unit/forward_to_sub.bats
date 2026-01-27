@@ -1,43 +1,4 @@
 # bats file_tags=bats:focus
-setup_copy_rake_in_tmpdir() {
-  cp -r "${RAKE_ROOT_DIR}" "$BATS_TEST_TMPDIR"
-  export RAKE_ROOT_DIR="${BATS_TEST_TMPDIR}/rake/"
-}
-
-teardown_remove_rake_from_tmpdir() {
-  rm -rf "${BATS_TEST_TMPDIR}/rake"
-}
-
-call_forward_to_sub() {
-  bash -c ". ${RAKE_ROOT_DIR}scripts/forward_to_sub.sh $1 $2"
-}
-
-create_sub_and_target() {
-  local sub &&
-    sub="$1"
-  local target &&
-    target="$2"
-
-  mkdir -p "${RAKE_ROOT_DIR}subs/${sub}"
-
-  cat <<EOF >"${RAKE_ROOT_DIR}subs/${sub}/makefile"
-${target}:
-	@echo I am a fancy target
-EOF
-}
-
-read_sub_from_registered_sub_file() {
-  local sub_name &&
-    local ppid &&
-    read -r sub_name ppid <<<"$(cat "${RAKE_ROOT_DIR}runs/.registered_sub")"
-
-  echo "$sub_name $ppid"
-}
-
-testing_ppid_provider() {
-  echo "'echo 42'"
-}
-
 setup_file() {
   bats_require_minimum_version 1.5.0
 }
@@ -46,6 +7,8 @@ setup() {
   load "${RAKE_ROOT_DIR}test/test_helper/bats-support/load"
   load "${RAKE_ROOT_DIR}test/test_helper/bats-assert/load"
   load "${RAKE_ROOT_DIR}test/test_helper/bats-file/load"
+
+  load "${RAKE_ROOT_DIR}test/test_helper/test_functions.sh"
 
   setup_copy_rake_in_tmpdir
 }
@@ -61,14 +24,13 @@ teardown() {
 }
 
 @test 'each call to forward_to_sub from different parent process register a new sub' {
-  local first_read_sub && local second_read_sub
-  local first_read_ppid && local second_read_ppid
-
   run call_forward_to_sub first_sub
-  read -r first_read_ppid first_read_sub <<<"$(read_sub_from_registered_sub_file)"
+  local first_read_sub && local second_read_sub &&
+    read -r first_read_ppid first_read_sub <<<"$(read_sub_from_registered_sub_file)"
 
   run call_forward_to_sub second_sub
-  read -r second_read_ppid second_read_sub <<<"$(read_sub_from_registered_sub_file)"
+  local first_read_ppid && local second_read_ppid &&
+    read -r second_read_ppid second_read_sub <<<"$(read_sub_from_registered_sub_file)"
 
   assert_not_equal "$first_read_ppid" "$second_read_ppid"
   assert_equal "$first_read_sub" first_sub
