@@ -5,14 +5,17 @@ setup_file() {
 setup() {
   load "${RAKE_ROOT_DIR}test/test_helper/bats-support/load"
   load "${RAKE_ROOT_DIR}test/test_helper/bats-assert/load"
+
+  load "${RAKE_ROOT_DIR}scripts/error_codes.sh"
 }
 
 teardown() {
   :
 }
 
-@test 'sub list compound target output nothing if there is no sub' {
-  run make -C "$RAKE_ROOT_DIR" sub list
+@test 'sub list output nothing if there is no sub' {
+  run make -s -C "$RAKE_ROOT_DIR" sub list
 
-  assert_output ''
+  assert_not_equal $status 0
+  assert_regex "$output" ".*Error ${RAKE_NO_SUB}"
 }

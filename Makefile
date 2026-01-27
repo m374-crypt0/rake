@@ -20,12 +20,7 @@ run_rake_tests:
 watch_rake_tests:
 	@. ${RAKE_ROOT_DIR}/test/watch.sh
 
-# compound targets
-
-.PHONY: sub
-sub:
-	@:
-
-.PHONY: list
-list:
-	@:
+# compound targets are forwarded to a potential sub
+.PHONY: %
+%:
+	@. scripts/forward_to_sub.sh $@
