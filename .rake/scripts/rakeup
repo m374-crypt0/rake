@@ -71,7 +71,7 @@ modify_help_script() {
 }
 
 init_rake_project() {
-  git clone https://github.com/MetaBarj0/rake.git &&
+  git clone https://github.com/m374-crypt0/rake.git &&
     cd rake &&
     remove_dev_git_modules &&
     git submodule update --init &&

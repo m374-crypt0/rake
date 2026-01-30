@@ -18,7 +18,7 @@ they've done reliably for decades.
 
 Simple:
 
-`curl -L https://raw.githubusercontent.com/MetaBarj0/rake/refs/heads/main/.rake/scripts/install | bash`
+`curl -L https://raw.githubusercontent.com/m374-crypt0/rake/refs/heads/main/.rake/scripts/install | bash`
 
 It will install `rakeup` in your user directory and you'll be able to `rake`
 everything:
