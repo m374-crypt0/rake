@@ -16,14 +16,14 @@ case $SHELL in
   if [[ ":$PATH:" != *":$RAKE_INSTALL_DIR:"* ]]; then
     cat <<EOF >>"${HOME}/.bashrc"
 
-# rakeup
+# rake
 export RAKE_INSTALL_DIR="$RAKE_INSTALL_DIR"
 export PATH="\${PATH}:\$RAKE_INSTALL_DIR"
 EOF
-    echo "Added rakeup to your PATH. Source ${HOME}/.bashrc or start a new terminal session to use rakeup."
+    echo "Added rake to your PATH. Source ${HOME}/.bashrc or start a new terminal session to use rake."
   fi
   ;;
 *)
-  echo "rakeup: cannot detect your shell. Do manually add $RAKE_INSTALL_DIR to your PATH" >&2
+  echo "rake: cannot detect your shell. Do manually add $RAKE_INSTALL_DIR to your PATH" >&2
   ;;
 esac

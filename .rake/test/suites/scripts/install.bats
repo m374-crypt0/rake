@@ -34,18 +34,18 @@ teardown() {
 
   run install_from_curl
 
-  assert_regex "$output" "rakeup: cannot detect your shell. Do manually add $RAKE_INSTALL_DIR to your PATH"
+  assert_regex "$output" "rake: cannot detect your shell. Do manually add $RAKE_INSTALL_DIR to your PATH"
 
   export SHELL="/bin/bash"
 
   run install_from_curl
 
-  assert_regex "$output" "Added rakeup to your PATH. Source ${HOME}/.bashrc or start a new terminal session to use rakeup."
+  assert_regex "$output" "Added rake to your PATH. Source ${HOME}/.bashrc or start a new terminal session to use rake."
 
   load "${HOME}/.bashrc"
   [[ ":$PATH:" == *":${RAKE_INSTALL_DIR}:"* ]]
 
-  run rakeup
+  run rake
 
-  assert_output 'rakeup: call rakeup within an empty directory'
+  assert_output 'rake: call rake within an empty directory'
 }
