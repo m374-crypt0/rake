@@ -24,16 +24,20 @@ they've done reliably for decades.
 
 ## Getting started
 
-Simple:
+For a first installation:
 
-`curl -L https://raw.githubusercontent.com/m374-crypt0/rake/refs/heads/main/.rake/scripts/install | bash`
+```bash
+curl -L https://raw.githubusercontent.com/m374-crypt0/rake/refs/heads/main/.rake/scripts/install | bash
+```
 
-It will install *rakeup* in your user directory and you'll be able to *rake*
-everything:
+It will install *rake* and *rakeup* in your user directory and you'll be able
+to *rake* everything:
 
+- `rakeup` to update your *rake* installation
+- `rake --help` to get some hints
 - `mkdir my-fancy-monorepo`
 - `cd my-fancy-monorepo`
-- `rakeup`
+- `rake new`
 
 It'll create a brand new git repository.
 All you need is to create some stuff (your project folders) in this directory.
