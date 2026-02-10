@@ -14,35 +14,57 @@ teardown() {
   :
 }
 
-@test 'cannot rake in a non empty directory' {
+# bats file_tags=bats:focus
+@test 'invoking rake alone print a man page' {
+  run "${RAKE_ROOT_DIR}.rake/scripts/rake"
+
+  assert_not_equal $status 0
+
+  assert_regex "$output" NAME
+  assert_regex "$output" SYNOPSIS
+  assert_regex "$output" DESCRIPTION
+  assert_regex "$output" 'RAKE COMMANDS'
+  assert_regex "$output" 'RAKE NEW ARGS'
+}
+
+@test 'invoking rake with anything than supported command fails' {
+  run "${RAKE_ROOT_DIR}.rake/scripts/rake" foo
+
+  assert_not_equal $status 0
+
+  assert_regex "$output" 'error: unrecognized command: <foo>'
+  assert_regex "$output" 'type rake without argument to read the manual'
+}
+
+@test 'cannot rake new in a non empty directory' {
   mkdir -p "${BATS_TEST_TMPDIR}/dir" &&
     touch "${BATS_TEST_TMPDIR}/dir/a_file" &&
     cd "${BATS_TEST_TMPDIR}/dir"
 
-  run "${RAKE_ROOT_DIR}.rake/scripts/rake"
+  run "${RAKE_ROOT_DIR}.rake/scripts/rake" new
 
   assert_not_equal $status 0
-  assert_output 'rake: call rake within an empty directory'
+  assert_output 'rake new error: current directory must be empty'
 }
 
-@test 'cannot rake in an existing git repository' {
+@test 'cannot rake new in an existing git repository' {
   mkdir -p "${BATS_TEST_TMPDIR}/dir" &&
     cd "${BATS_TEST_TMPDIR}/dir" &&
     git init >/dev/null 2>&1 &&
     mkdir inner &&
     cd inner
 
-  run "${RAKE_ROOT_DIR}.rake/scripts/rake"
+  run "${RAKE_ROOT_DIR}.rake/scripts/rake" new
 
   assert_not_equal $status 0
-  assert_output 'rake: do not rake within an existing git repository'
+  assert_output 'rake new error: do not rake new within an existing git repository'
 }
 
-@test 'rake in a valid dir create an empty rake project and initialize a git repository' {
+@test 'rake new in a valid dir create an empty rake project and initialize a git repository' {
   mkdir -p "${BATS_TEST_TMPDIR}/dir" &&
     cd "${BATS_TEST_TMPDIR}/dir"
 
-  run "${RAKE_ROOT_DIR}.rake/scripts/rake"
+  run "${RAKE_ROOT_DIR}.rake/scripts/rake" new
 
   run git status
   assert_equal $status 0
