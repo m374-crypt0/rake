@@ -14,14 +14,16 @@ teardown() {
   :
 }
 
-# # bats file_tags=bats:focus
-# @test 'rakeup update an existing installation of rake' {
-#   install_from_curl
-#   true >"${RAKE_ROOT_DIR}".rake/install
-#   true >"${RAKE_ROOT_DIR}".rake/rake
+@test 'rakeup update an existing installation of rake' {
+  export HOME="${BATS_TEST_TMPDIR}"
+  export RAKE_INSTALL_DIR="${HOME}/.rake/"
 
-#   assert_not_equal 0 "$(cat "${RAKE_ROOT_DIR}.rake/rakeup" | wc -m)"
-#   assert_equal 0 "$(cat "${RAKE_ROOT_DIR}.rake/install" | wc -m)"
-#   assert_equal 0 "$(cat "${RAKE_ROOT_DIR}.rake/rake" | wc -m)"
+  run install_from_curl
 
-# }
+  true >"${RAKE_INSTALL_DIR}rake"
+  assert_equal 0 "$(cat "${RAKE_INSTALL_DIR}rake" | wc -m)"
+
+  run "${RAKE_INSTALL_DIR}rakeup"
+
+  assert_not_equal 0 "$(cat "${RAKE_INSTALL_DIR}rake" | wc -m)"
+}
