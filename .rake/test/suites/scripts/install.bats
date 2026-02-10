@@ -19,22 +19,22 @@ teardown() {
 
 @test 'executing install from cURL installs rakeup in a specified directory' {
   export HOME="${BATS_TEST_TMPDIR}"
-  export RAKEUP_INSTALL_DIR="${HOME}/.rake/"
+  export RAKE_INSTALL_DIR="${HOME}/.rake/"
 
   run install_from_curl
 
-  assert_file_exists "${RAKEUP_INSTALL_DIR}/rakeup"
-  assert_file_exists "${RAKEUP_INSTALL_DIR}/rake"
+  assert_file_exists "${RAKE_INSTALL_DIR}/rakeup"
+  assert_file_exists "${RAKE_INSTALL_DIR}/rake"
 }
 
 @test 'install does only support bash for path registration' {
   export HOME="${BATS_TEST_TMPDIR}"
-  export RAKEUP_INSTALL_DIR="${HOME}/.rake/"
+  export RAKE_INSTALL_DIR="${HOME}/.rake/"
   export SHELL="/bin/badsh"
 
   run install_from_curl
 
-  assert_regex "$output" "rakeup: cannot detect your shell. Do manually add $RAKEUP_INSTALL_DIR to your PATH"
+  assert_regex "$output" "rakeup: cannot detect your shell. Do manually add $RAKE_INSTALL_DIR to your PATH"
 
   export SHELL="/bin/bash"
 
@@ -43,7 +43,7 @@ teardown() {
   assert_regex "$output" "Added rakeup to your PATH. Source ${HOME}/.bashrc or start a new terminal session to use rakeup."
 
   load "${HOME}/.bashrc"
-  [[ ":$PATH:" == *":${RAKEUP_INSTALL_DIR}:"* ]]
+  [[ ":$PATH:" == *":${RAKE_INSTALL_DIR}:"* ]]
 
   run rakeup
 

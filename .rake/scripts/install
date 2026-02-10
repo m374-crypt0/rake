@@ -17,8 +17,8 @@ case $SHELL in
     cat <<EOF >>"${HOME}/.bashrc"
 
 # rakeup
-export RAKEUP_INSTALL_DIR="$RAKE_INSTALL_DIR"
-export PATH="\${PATH}:\$RAKEUP_INSTALL_DIR"
+export RAKE_INSTALL_DIR="$RAKE_INSTALL_DIR"
+export PATH="\${PATH}:\$RAKE_INSTALL_DIR"
 EOF
     echo "Added rakeup to your PATH. Source ${HOME}/.bashrc or start a new terminal session to use rakeup."
   fi
