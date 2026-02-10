@@ -14,35 +14,35 @@ teardown() {
   :
 }
 
-@test 'cannot rakeup in a non empty directory' {
+@test 'cannot rake in a non empty directory' {
   mkdir -p "${BATS_TEST_TMPDIR}/dir" &&
     touch "${BATS_TEST_TMPDIR}/dir/a_file" &&
     cd "${BATS_TEST_TMPDIR}/dir"
 
-  run "${RAKE_ROOT_DIR}.rake/scripts/rakeup"
+  run "${RAKE_ROOT_DIR}.rake/scripts/rake"
 
   assert_not_equal $status 0
-  assert_output 'rakeup: call rakeup within an empty directory'
+  assert_output 'rake: call rake within an empty directory'
 }
 
-@test 'cannot rakeup in an existing git repository' {
+@test 'cannot rake in an existing git repository' {
   mkdir -p "${BATS_TEST_TMPDIR}/dir" &&
     cd "${BATS_TEST_TMPDIR}/dir" &&
     git init >/dev/null 2>&1 &&
     mkdir inner &&
     cd inner
 
-  run "${RAKE_ROOT_DIR}.rake/scripts/rakeup"
+  run "${RAKE_ROOT_DIR}.rake/scripts/rake"
 
   assert_not_equal $status 0
-  assert_output 'rakeup: do not rakeup within an existing git repository'
+  assert_output 'rake: do not rake within an existing git repository'
 }
 
-@test 'rakeup in a valid dir create an empty rake project and initialize a git repository' {
+@test 'rake in a valid dir create an empty rake project and initialize a git repository' {
   mkdir -p "${BATS_TEST_TMPDIR}/dir" &&
     cd "${BATS_TEST_TMPDIR}/dir"
 
-  run "${RAKE_ROOT_DIR}.rake/scripts/rakeup"
+  run "${RAKE_ROOT_DIR}.rake/scripts/rake"
 
   run git status
   assert_equal $status 0

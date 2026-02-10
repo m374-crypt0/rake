@@ -24,6 +24,7 @@ teardown() {
   run install_from_curl
 
   assert_file_exists "${RAKEUP_INSTALL_DIR}/rakeup"
+  assert_file_exists "${RAKEUP_INSTALL_DIR}/rake"
 }
 
 @test 'install does only support bash for path registration' {
