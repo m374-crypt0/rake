@@ -78,7 +78,8 @@ modify_help_script() {
 }
 
 init_rake_project() {
-  git clone https://github.com/m374-crypt0/rake.git &&
+  local no_git && no_git=$1 &&
+    git clone https://github.com/m374-crypt0/rake.git &&
     cd rake &&
     remove_dev_git_modules &&
     git submodule update --init &&
@@ -88,6 +89,7 @@ init_rake_project() {
     remove_dev_files &&
     modify_makefile &&
     modify_help_script &&
+    [ -z "$no_git" ] &&
     git init &&
     echo .rake/.registered_sub >.gitignore
 }
@@ -171,9 +173,12 @@ process_new() {
   local force &&
     force="$(parse_option --force "$@")"
 
+  local no_git &&
+    no_git="$(parse_option --no-git "$@")"
+
   ensure_directory_empty "$force" &&
     ensure_not_git_repository "$force" &&
-    init_rake_project
+    init_rake_project "$no_git"
 }
 
 process_command() {

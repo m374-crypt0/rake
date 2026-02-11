@@ -94,3 +94,16 @@ teardown() {
   run make sub list
   assert_regex "$output" 'There is no sub'
 }
+
+@test 'rake new in a valid dir create an empty rake project and does not initialize a git repository with --no-git' {
+  mkdir -p "${BATS_TEST_TMPDIR}/dir" &&
+    cd "${BATS_TEST_TMPDIR}/dir"
+
+  run "${RAKE_ROOT_DIR}.rake/scripts/rake" new --no-git
+
+  run git status
+  assert_not_equal $status 0
+
+  run make sub list
+  assert_regex "$output" 'There is no sub'
+}
