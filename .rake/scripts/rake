@@ -15,6 +15,9 @@ ensure_directory_empty() {
 }
 
 ensure_not_git_repository() {
+  local force && force=$1 &&
+    [ -n "$force" ] && return 0
+
   if git status >/dev/null 2>&1; then
     echo 'rake new error: do not rake new within an existing git repository' >&2
     return 1
@@ -124,7 +127,7 @@ RAKE NEW ARGS
     By specifying this option, a rake project will always be created in the
     current directory
 
-  --no-git-dir
+  --no-git
     Normally, creating a rake project also create a fresh git repository.
     Specifying this option tells rake not to create a new git repository to
     track this new rake project.
@@ -169,7 +172,7 @@ process_new() {
     force="$(parse_option --force "$@")"
 
   ensure_directory_empty "$force" &&
-    ensure_not_git_repository &&
+    ensure_not_git_repository "$force" &&
     init_rake_project
 }
 

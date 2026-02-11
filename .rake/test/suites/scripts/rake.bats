@@ -70,6 +70,18 @@ teardown() {
   assert_output 'rake new error: do not rake new within an existing git repository'
 }
 
+@test 'can rake new in an existing git repository if --force is passed' {
+  mkdir -p "${BATS_TEST_TMPDIR}/dir" &&
+    cd "${BATS_TEST_TMPDIR}/dir" &&
+    git init >/dev/null 2>&1 &&
+    mkdir inner &&
+    cd inner
+
+  run "${RAKE_ROOT_DIR}.rake/scripts/rake" new --force
+
+  assert_equal $status 0
+}
+
 @test 'rake new in a valid dir create an empty rake project and initialize a git repository' {
   mkdir -p "${BATS_TEST_TMPDIR}/dir" &&
     cd "${BATS_TEST_TMPDIR}/dir"
