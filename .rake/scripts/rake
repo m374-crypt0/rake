@@ -1,6 +1,9 @@
 #!/bin/env bash
 
 ensure_directory_empty() {
+  local force && force=$1 &&
+    [ -n "$force" ] && return 0
+
   local c && c="$(find . \
     -mindepth 1 -maxdepth 1 |
     wc -c)"
@@ -115,13 +118,13 @@ RAKE COMMANDS
     - A Makefile able to handle compound targets.
 
 RAKE NEW ARGS
-  -f, --force
+  --force
     Normally, attemtping to create a rake project within a non-empty directory
     or within an empty directory being tracked by git is an error.
     By specifying this option, a rake project will always be created in the
     current directory
 
-  -n, --no-git-dir
+  --no-git-dir
     Normally, creating a rake project also create a fresh git repository.
     Specifying this option tells rake not to create a new git repository to
     track this new rake project.
@@ -151,8 +154,21 @@ is_unsupported_command() {
   esac
 }
 
+parse_option() {
+  local expected_option && expected_option=$1 && shift &&
+    local option &&
+    for option in "$@"; do
+      [ "$option" = "$expected_option" ] && echo "$expected_option" && return 0
+    done
+
+  return 1
+}
+
 process_new() {
-  ensure_directory_empty &&
+  local force &&
+    force="$(parse_option --force "$@")"
+
+  ensure_directory_empty "$force" &&
     ensure_not_git_repository &&
     init_rake_project
 }
@@ -160,7 +176,7 @@ process_new() {
 process_command() {
   local command && command="$1" && shift &&
     [ "$(type -t "process_$command")" = function ] &&
-    eval "process_$command"
+    process_"$command" "$@"
 }
 
 main() {

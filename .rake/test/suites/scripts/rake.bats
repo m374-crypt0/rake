@@ -47,6 +47,16 @@ teardown() {
   assert_output 'rake new error: current directory must be empty'
 }
 
+@test 'can rake new in a non empty directory if --force is passed' {
+  mkdir -p "${BATS_TEST_TMPDIR}/dir" &&
+    touch "${BATS_TEST_TMPDIR}/dir/a_file" &&
+    cd "${BATS_TEST_TMPDIR}/dir"
+
+  run "${RAKE_ROOT_DIR}.rake/scripts/rake" new --force
+
+  assert_equal $status 0
+}
+
 @test 'cannot rake new in an existing git repository' {
   mkdir -p "${BATS_TEST_TMPDIR}/dir" &&
     cd "${BATS_TEST_TMPDIR}/dir" &&
