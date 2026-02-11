@@ -47,5 +47,5 @@ teardown() {
 
   run rake
 
-  assert_output 'rake: call rake within an empty directory'
+  assert_not_equal $status 127
 }

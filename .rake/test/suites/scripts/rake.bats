@@ -14,7 +14,6 @@ teardown() {
   :
 }
 
-# bats file_tags=bats:focus
 @test 'invoking rake alone print a man page' {
   run "${RAKE_ROOT_DIR}.rake/scripts/rake"
 
