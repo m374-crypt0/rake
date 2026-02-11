@@ -7,6 +7,11 @@
 - [rake - Because Your Mono-repo Deserves Better](#rake-because-your-mono-repo-deserves-better)
   - [What is rake?](#what-is-rake)
   - [Getting started](#getting-started)
+    - [First install](#first-install)
+    - [Updating](#updating)
+    - [Usage](#usage)
+      - [Creating a new rake project](#creating-a-new-rake-project)
+      - [Using a rake project](#using-a-rake-project)
   - [Why You'll Get Raked With Joy](#why-youll-get-raked-with-joy)
   - [The rake Philosophy](#the-rake-philosophy)
 <!--toc:end-->
@@ -24,28 +29,52 @@ they've done reliably for decades.
 
 ## Getting started
 
-For a first installation:
+### First install
 
 ```bash
 curl -L https://raw.githubusercontent.com/m374-crypt0/rake/refs/heads/main/.rake/scripts/install | bash
 ```
 
 It will install *rake* and *rakeup* in your user directory and you'll be able
-to *rake* everything:
+to *rake* everything
 
-- `rakeup` to update your *rake* installation
-- `rake --help` to get some hints
-- `mkdir my-fancy-monorepo`
-- `cd my-fancy-monorepo`
-- `rake new`
+### Updating
 
-It'll create a brand new git repository.
-All you need is to create some stuff (your project folders) in this directory.
-Let's call those projects *subs*.
-Each *sub* is a part of your project (frontend, backend, git submodule,
-whatever...).
+```bash
+rakeup
+```
 
-==The must is that you have to have a Makefile== in the `sub` you create.
+### Usage
+
+#### Creating a new rake project
+
+```bash
+# print the manual
+rake
+
+# create a new rake project in an empty untracked (not in git repo) directory
+rake new
+
+# create a new rake project even in non empty or tracked (in git repo) directory
+rake new --force
+
+# create a new rake project without initializing a new git repository
+rake new --no-git
+```
+
+#### Working in a rake project
+
+```bash
+# querying existing subs
+make sub list
+
+# create a new sub name backend
+mdkir backend
+touch backend/Makefile
+
+# executing an existing sub target (target build in backend/Makefile)
+make backend build
+```
 
 ## Why You'll Get Raked With Joy
 
